@@ -1,0 +1,7 @@
+{
+  "name": "HODLONG",
+  "version": "0.0.1",
+  "dependencies": {
+    "eosjs": "^15.0.3"
+  }
+}
