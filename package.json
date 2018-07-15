@@ -3,11 +3,18 @@
   "version": "0.0.1",
   "dependencies": {
     "bittorrent-tracker": "^9.9.1",
-    "eosjs": "^15.0.3"
+    "eosjs": "^15.0.3",
+    "express": "^4.16.3",
+    "lscache": "^1.2.0",
+    "webtorrent": "^0.100.0",
+    "workerpool": "^2.3.0"
   },
   "devDependencies": {
     "babel-preset-env": "*",
     "jest": "^23.4.0"
   },
-  "main": "index.server.js"
+  "main": "index.server.js",
+  "scripts": {
+    "server": "node index.server.js"
+  }
 }
