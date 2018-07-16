@@ -1,0 +1,5 @@
+
+
+module.client =  class {
+
+};

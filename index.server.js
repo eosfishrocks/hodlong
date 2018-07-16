@@ -3,7 +3,6 @@ var config = require('src/config');
 var express = require('express');
 var app = express();
 
-// https://wiki.theory.org/BitTorrentSpecification#peer_id
 var whitelist = {
     UT: true // uTorrent
 };

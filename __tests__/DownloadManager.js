@@ -1,4 +1,4 @@
-import '../src/DownloadManager';
+import DownloadManager from 'DownloadManager';
 
 jest.mock('../src/DownloadManager');
 
