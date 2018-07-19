@@ -2,3 +2,5 @@
 *.iml
 *.log
 node_modules
+cmake-build-debug
+build
