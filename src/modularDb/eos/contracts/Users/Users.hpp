@@ -13,7 +13,7 @@ namespace hodlong {
 
         Users(account_name self) : contract(self) {}
 
-        void add(account_name account, string &username);
+        void add(account_name account, string& username);
 
         void getuser(const account_name account);
 
