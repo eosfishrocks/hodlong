@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.9)
 project(Users CXX)
 
 
-set(BOOST_INSTALL_DIR $ENV{HOME}/opt/boost_1_66_0)
-set(WASM_INSTALL_DIR $ENV{HOME}/opt/wasm)
+set(BOOST_INSTALL_DIR /usr/local/opt/boost_1_66_0)
+set(WASM_INSTALL_DIR /usr/local/opt/wasm)
 
 set(EOSIO_INSTALL_DIR /usr/local)
 set(S2WASM_PATH ${EOSIO_INSTALL_DIR}/bin/eosio-s2wasm)
@@ -27,10 +27,9 @@ include_directories(${EOSIO_INSTALL_DIR}/include/libc++/upstream/include)
 include_directories(${EOSIO_INSTALL_DIR}/include/musl/upstream/include)
 include_directories(${BOOST_INSTALL_DIR}/include)
 
-set(CPP_FILES
-        src/modularDb/eos/contracts/${CMAKE_PROJECT_NAME}/${CMAKE_PROJECT_NAME}.cpp)
+set(CPP_FILES src/contracts/Users.cpp;src/contracts/Marketplace.cpp)
 
-set(HPP_FILES)
+set(HPP_FILES src/contracts/Users.hpp;src/contracts/Marketplace.hpp)
 
 add_library(link SHARED
         ${CPP_FILES}
