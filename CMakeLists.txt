@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.9)
-project(Users CXX)
-
-
 set(BOOST_INSTALL_DIR /usr/local/opt/boost_1_66_0)
-set(WASM_INSTALL_DIR /usr/local/opt/wasm)
-
+set(WASM_INSTALL_DIR /usr/local/wasm)
+set(CMAKE_CXX_COMPILER ${WASM_INSTALL_DIR}/bin/clang++)
 set(EOSIO_INSTALL_DIR /usr/local)
+
+project(Users CXX)
 set(S2WASM_PATH ${EOSIO_INSTALL_DIR}/bin/eosio-s2wasm)
 
 set(EOSIO_CONTRACTSDK_PATH ${EOSIO_INSTALL_DIR}/usr/share/eosio/contractsdk)

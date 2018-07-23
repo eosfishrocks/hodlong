@@ -19,13 +19,13 @@ namespace hodlong {
         void getbyid(uint64_t bidId);
 
         //@abi action
-        void add(account_name account, product newProduct);
+        void add(account_name account, product bidBid);
 
         //@abi action
-        void update(account_name account, uint64_t product_id, uint64_t quantity);
+        void update(account_name account, uint64_t bid_id, uint64_t quantity);
 
         //@abi action
-        void remove(account_name account, uint64_t productId);
+        void remove(account_name account, uint64_t bidId);
 
     private:
 
@@ -35,7 +35,7 @@ namespace hodlong {
             uint64_t quantity;
             uint64_t price;
 
-            uint64_t primary_key() const { return product_id; }
+            uint64_t primary_key() const { return bid_id; }
 
             EOSLIB_SERIALIZE(bid, (bid_id)(quantity)(price))
         };
