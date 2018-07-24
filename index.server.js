@@ -1,7 +1,9 @@
 var Server = require('bittorrent-tracker').Server;
 var config = require('src/config');
-var eos = require('eosjs');
+var EOS = require('eosjs');
 var express = require('express');
+var ProofOfStorage = require('src/ProofOfStorage');
+var ProofOfSeed = require('src/ProofOfSeed');
 var app = express();
 
 var whitelist = {
@@ -37,10 +39,16 @@ config = {
     sign: true
 };
 
-eos(config);
+const eos = EOS(config);
 
 var onHttpRequest = server.onHttpRequest.bind(server);
 app.get('/announce', onHttpRequest);
 app.get('/scrape', onHttpRequest);
 
 app.listen(config.TRACKER_PORT);
+
+// Proof of Seed runtime
+while(config.SERVER === "active"){
+    ProofOfSeed(eos, server);
+    ProofOfStorage(eos, server);
+};
