@@ -6,6 +6,8 @@ var ProofOfStorage = require('src/ProofOfStorage');
 var ProofOfSeed = require('src/ProofOfSeed');
 var app = express();
 
+var magnetWhitelist = {};
+
 var whitelist = {
     UT: true // uTorrent
 };
@@ -17,15 +19,17 @@ if (config.PRIVATE_KEY = ""){
 var server = new Server({
     http: false, // we do our own
     udp: false, // not interested
-    ws: false, // not interested
-    filter: function (params) {
+    ws: true, // enabled to allow browser connections
+    filter: function (infoHash, params, cb) {
+
+
+
         // black/whitelist for disallowing/allowing specific clients [default=allow all]
         // this example only allows the uTorrent client
         var client = params.peer_id[1] + params.peer_id[2]
         return whitelist[client]
     }
 });
-
 
 
 // Default configuration (additional options below)
@@ -41,6 +45,8 @@ config = {
 
 const eos = EOS(config);
 
+eos.
+
 var onHttpRequest = server.onHttpRequest.bind(server);
 app.get('/announce', onHttpRequest);
 app.get('/scrape', onHttpRequest);
@@ -51,4 +57,4 @@ app.listen(config.TRACKER_PORT);
 while(config.SERVER === "active"){
     ProofOfSeed(eos, server);
     ProofOfStorage(eos, server);
-};
+}
