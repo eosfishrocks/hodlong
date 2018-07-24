@@ -29,8 +29,7 @@ include_directories(${BOOST_INSTALL_DIR}/include)
 set(CPP_FILES src/contracts/Users.cpp
         src/contracts/Marketplace.cpp)
 
-set(HPP_FILES src/contracts/Users.hpp
-        src/contracts/Marketplace.hpp)
+set(HPP_FILES)
 
 add_library(link SHARED
         ${CPP_FILES}
