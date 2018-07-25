@@ -13,6 +13,4 @@ namespace hodlong {
     void Token::verify(account_name account, uint64_t hashId){
 
     }
-
-
 }
