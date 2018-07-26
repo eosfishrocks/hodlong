@@ -5,35 +5,33 @@ import Client from 'bittorrent-tracker';
 import Config from '../config';
 
 const DownloadManger = class DownloadManager {
-    queue = [];
-    active = [];
-    client;
-    opts = {
-        infoHash: new Buffer('012345678901234567890'), // hex string or Buffer
-        peerId: new Buffer('01234567890123456789'), // hex string or Buffer
-        announce: [], // list of tracker server urls
-        port: 6881, // torrent client port, (in browser, optional)
-        getAnnounceOpts: function () {
-            // Provide a callback that will be called whenever announce() is called
-            // internally (on timer), or by the user
-            return {
-                uploaded: 0,
-                downloaded: 0,
-                left: 0,
-                customParam: 'blah' // custom parameters supported
-            }
-        },
-        // RTCPeerConnection config object (only used in browser)
-        rtcConfig: {},
-        // User-Agent header for http requests
-        userAgent: '',
-        // Custom webrtc impl, useful in node to specify [wrtc](https://npmjs.com/package/wrtc)
-        wrtc: {},
-    };
 
     constructor() {
         this.client = new WebTorrent();
-
+        this.queue = [];
+        this.active = [];
+        this.opts = {
+            infoHash: new Buffer('012345678901234567890'), // hex string or Buffer
+            peerId: new Buffer('01234567890123456789'), // hex string or Buffer
+            announce: [], // list of tracker server urls
+            port: 6881, // torrent client port, (in browser, optional)
+            getAnnounceOpts: function () {
+                // Provide a callback that will be called whenever announce() is called
+                // internally (on timer), or by the user
+                return {
+                    uploaded: 0,
+                    downloaded: 0,
+                    left: 0,
+                    customParam: 'blah' // custom parameters supported
+                }
+            },
+            // RTCPeerConnection config object (only used in browser)
+            rtcConfig: {},
+            // User-Agent header for http requests
+            userAgent: '',
+            // Custom webrtc impl, useful in node to specify [wrtc](https://npmjs.com/package/wrtc)
+            wrtc: {},
+        };
     }
 
     async getItem(itemKey) {

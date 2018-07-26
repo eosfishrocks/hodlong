@@ -1,1 +1,1 @@
-export DownloadManager from 'DownloadManager';
+export { default } from 'DownloadManager';
