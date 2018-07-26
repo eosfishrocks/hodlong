@@ -25,6 +25,10 @@
     "verbose": true,
     "testMatch": [
       "**/*.steps.js"
-    ]
+    ],
+    "globals": {
+      "__DEV__": true,
+      "__SAMPLE_IMAGE_FILE": "./__tests__/sample.jpg"
+    }
   }
 }

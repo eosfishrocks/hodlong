@@ -2,7 +2,7 @@ import WebTorrent from 'webtorrent';
 import 'lscache';
 import workerpool from 'workerpool';
 import Client from 'bittorrent-tracker';
-import Config from '../config';
+import Config from './config';
 
 const DownloadManger = class DownloadManager {
 

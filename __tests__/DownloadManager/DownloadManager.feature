@@ -1,10 +1,5 @@
 Feature: Create a new DownloadManager Instance
-  Scenario: Insantiating a download manager object
-    Given a download manager module
-    When I instantiate the module
-    Then the manager is initalized
-
-  Scenario:
+  Scenario: Adding a magnet to the manager
     Given a download manager
     When I add a magnet id to the manager
     Then a promise is returned

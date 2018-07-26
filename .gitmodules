@@ -1,0 +1,3 @@
+[submodule "__tests__/__assets__"]
+	path = __tests__/__assets__
+	url = git@github.com:eosfishrocks/__assets__.git
