@@ -19,7 +19,8 @@
   "scripts": {
     "build": "babel src -d build",
     "server": "node index.server.js",
-    "test": "jest"
+    "test": "jest",
+    "test-server": "__ENV__=test node index.server.js"
   },
   "jest": {
     "verbose": true,
