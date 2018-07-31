@@ -2,18 +2,18 @@ import WebTorrent from 'webtorrent';
 import 'lscache';
 import workerpool from 'workerpool';
 import Client from 'bittorrent-tracker';
-import Config from './config';
+import config from './config';
 
 const DownloadManger = class DownloadManager {
 
-    constructor() {
+    constructor(opts) {
         this.client = new WebTorrent();
         this.queue = [];
         this.active = [];
-        this.opts = {
-            infoHash: new Buffer('012345678901234567890'), // hex string or Buffer
-            peerId: new Buffer('01234567890123456789'), // hex string or Buffer
-            announce: [], // list of tracker server urls
+        this.requests = [];
+        if (!opts) this.opts = {
+            peerId: new Buffer(config.CLIENT_PEER_ID), // hex string or Buffer
+            announce: [config.TRACKER], // list of tracker server urls
             port: 6881, // torrent client port, (in browser, optional)
             getAnnounceOpts: function () {
                 // Provide a callback that will be called whenever announce() is called
@@ -32,16 +32,7 @@ const DownloadManger = class DownloadManager {
             // Custom webrtc impl, useful in node to specify [wrtc](https://npmjs.com/package/wrtc)
             wrtc: {},
         };
-    }
-
-    async getItem(itemKey) {
-        const item = lscache.get(itemKey);
-        if (item) return item;
-        else return this._fetchFromNetwork(itemKey);
-    }
-
-    _fetchFromNetwork(itemKey) {
-        this.client = new Client(opts);
+        this.client = new Client(this.opts);
 
         this.client.on('error', function (err) {
             // fatal client error!
@@ -52,9 +43,29 @@ const DownloadManger = class DownloadManager {
             // a tracker was unavailable or sent bad data to the client. you can probably ignore it
             console.log(err.message)
         });
-
-        // start getting peers from the tracker
         this.client.start();
+
+        this.client.torrents.on('wire', function (wire){
+            for (let item in this.active){
+                let torrent = client.get(item);
+                if (torrent.status() === 200 && this.active.filter(function (torrent) {return torrent.magnetURI === torrent.magnetURI}))
+                {
+                    this.client.remove(torrent.magnetURI);
+                }
+            }
+        })
+    }
+
+    _requestedItems(item){
+        this.requests.append(item);
+    }
+
+    async getItem(itemKey) {
+        const item = lscache.get(itemKey);
+        if (item) return item;
+        else return this._fetchFromNetwork(itemKey);
+    }
+    _fetchFromNetwork(itemKey) {
 
         this.client.on('update', function (data) {
             console.log('got an announce response from tracker: ' + data.announce);
@@ -93,13 +104,16 @@ const DownloadManger = class DownloadManager {
             customParam: 'blah' // custom parameters supported
         });
 
-// stop getting peers from the tracker, gracefully leave the swarm
+    }
+    _shutdown(){
+
+            // stop getting peers from the tracker, gracefully leave the swarm
         this.client.stop();
 
-// ungracefully leave the swarm (without sending final 'stop' message)
+        // ungracefully leave the swarm (without sending final 'stop' message)
         this.client.destroy();
 
-// scrape
+        // scrape
         this.client.scrape();
 
         this.client.on('scrape', function (data) {

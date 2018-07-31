@@ -1,13 +1,14 @@
 import { defineFeature, loadFeature } from 'jest-cucumber';
 import DownloadManger from '../../src/DownloadManager';
+import { config } from '../../src/config';
 
 const feature = loadFeature('./__tests__/DownloadManager/DownloadManager.feature');
-const sampleMagnetId = "";
 
 defineFeature(feature, test => {
     test('Adding a magnet to the manager', ({ given, when, then, and }) => {
             let dm;
             let response;
+            config.CLIENT_PEER_ID="TEST_CLIENT";
         given('a download manager', () => {
             dm = new DownloadManger();
         });
@@ -21,8 +22,8 @@ defineFeature(feature, test => {
         });
 
         and('the promise contains the current download status', () => {
-            expect(dm.then('test' => {
-
+            expect(dm.then('test', () => {
+                
             }
             ));
         });
