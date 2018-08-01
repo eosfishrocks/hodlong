@@ -6,14 +6,16 @@ import config from './config';
 
 const DownloadManger = class DownloadManager {
 
-    constructor(peerid ,opts) {
+    constructor(infohash, peerid ,opts) {
         this.client = new WebTorrent();
         this.queue = [];
         this.active = [];
         this.requests = [];
         this.peerid = peerid;
+        this.infohash = infohash;
 
         if (!opts) this.opts = {
+            infoHash: new Buffer(this.infohash),
             peerId: new Buffer(this.peerid), // hex string or Buffer
             announce: [config.TRACKER], // list of tracker server urls
             port: 6881, // torrent client port, (in browser, optional)
@@ -46,20 +48,14 @@ const DownloadManger = class DownloadManager {
             console.log(err.message)
         });
         this.client.start();
-
-        this.client.torrents.on('wire', function (wire){
-            for (let item in this.active){
-                let torrent = client.get(item);
-                if (torrent.status() === 200 && this.active.filter(function (torrent) {return torrent.magnetURI === torrent.magnetURI}))
-                {
-                    this.client.remove(torrent.magnetURI);
-                }
-            }
-        })
     }
 
     _requestedItems(item){
         this.requests.append(item);
+    }
+
+    getStatus(){
+
     }
 
     async getItem(itemKey) {
@@ -78,14 +74,23 @@ const DownloadManger = class DownloadManager {
             console.log('found a peer: ' + address)
         });
 
-        this.client.add(itemKey, function (data) {
+        this.client.add(itemKey, function (torrent) {
+            torrent.on('wire', function (wire){
+                for (let item in this.active){
+                    let torrent = client.get(item);
+                    if (torrent.status() === 200 && this.active.filter(function (torrent) {return torrent.magnetURI === torrent.magnetURI}))
+                    {
+                        this.client.remove(torrent.magnetURI);
+                    }
+                }
+            });
             console.log("Downloading from:", torrent.infoHash);
             if (this.active.length < 5) {
                 queue.append(itemKey);
             }
             active.append(itemKey);
-            data.files.forEach(function (file) {
-                lscache.set(itemKey, file)
+            torrent.files.forEach(function (file) {
+                lscache.set(itemKey, `${itemKey}-${file}`)
             })
         });
     }

@@ -7,16 +7,16 @@ const feature = loadFeature('./__tests__/DownloadManager/DownloadManager.feature
 
 defineFeature(feature, test => {
     test('Adding a magnet to the manager', ({ given, when, then }) => {
-            let dm;
-            let response;
-            const CLIENT_PEER_ID="DEV_CLIENT1";
-            localstorage.__STORE__ = {};
-
+        let dm;
+        let response;
+        const CLIENT_PEER_ID="DEV_CLIENT1";
+        const TEST_INFO_HASH_ID='0124567890';
+        localstorage.__STORE__ = {}
         given('a download manager', () => {
-            dm = new DownloadManger(CLIENT_PEER_ID);
+            dm = new DownloadManger(TEST_INFO_HASH_ID, CLIENT_PEER_ID);
         });
 
-        when('I fetch an item that has not yet downloaded', () => {
+        when('I add a magnet id to the manager', () => {
            response = dm.getItem("");
         });
 
@@ -24,11 +24,44 @@ defineFeature(feature, test => {
             expect(response).toBeTruthy();
         });
 
-        then('and the promise contains the current download status', () => {
-            expect(dm.then('test', () => {
+        then('the promise contains the current download status', () => {
+            expect(dm.getStatus());
+        });
+    });
 
-            }
-            ));
+    test('Adding more than tweleve magnets to the manager', ({ given, when, then, pending }) => {
+        given('a download manager', () => {
+            pending();
+        });
+
+        when('I add more than twelve magnet ids to the manager', () => {
+            pending();
+        });
+
+        then('the download manager keeps twelve active connections', () => {
+            pending();
+        });
+    });
+
+    test('Moving a download to the background', ({ given, when, then, pending }) => {
+        given('a download manager', () => {
+            pending();
+        });
+
+        when('I add a magnet id to the manager', () => {
+            pending();
+        });
+
+        then('the download finishes and gets added to the background', () => {
+            pending();
+        });
+
+        then('a separate client requests the same id', () => {
+            pending();
+        });
+
+        then('the download is added back to the active connections', () => {
+            pending();
         });
     });
 });

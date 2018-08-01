@@ -3,14 +3,14 @@ Feature: Create a new DownloadManager Instance
     Given a download manager
     When I add a magnet id to the manager
     Then a promise is returned
-    Then and the promise contains the current download status
+    And the promise contains the current download status
 
-  Scenario:
+  Scenario: Adding more than tweleve magnets to the manager
     Given a download manager
     When I add more than twelve magnet ids to the manager
     Then the download manager keeps twelve active connections
 
-  Scenario:
+  Scenario: Moving a download to the background
     Given a download manager
     When I add a magnet id to the manager
     Then the download finishes and gets added to the background
