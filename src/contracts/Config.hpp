@@ -32,6 +32,6 @@ namespace hodlong {
         };
 
 
-        EOSIO_ABI(Users,
+        EOSIO_ABI(Config,
         );
     }
