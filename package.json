@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "babel-preset-env": "*",
-    "jest-cucumber": "^1.0.7"
+    "jest-cucumber": "^1.0.7",
+    "jest-localstorage-mock": "^2.2.0"
   },
   "main": "index.server.js",
   "scripts": {
@@ -27,6 +28,9 @@
     "testMatch": [
       "**/*.steps.js"
     ],
+    "setupFiles":
+    ["jest-localstorage-mock"],
+    "testURL": "http://localhost/",
     "globals": {
       "__DEV__": true,
       "__SAMPLE_IMAGE_FILE": "./__tests__/sample.jpg"

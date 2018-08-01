@@ -6,13 +6,15 @@ import config from './config';
 
 const DownloadManger = class DownloadManager {
 
-    constructor(opts) {
+    constructor(peerid ,opts) {
         this.client = new WebTorrent();
         this.queue = [];
         this.active = [];
         this.requests = [];
+        this.peerid = peerid;
+
         if (!opts) this.opts = {
-            peerId: new Buffer(config.CLIENT_PEER_ID), // hex string or Buffer
+            peerId: new Buffer(this.peerid), // hex string or Buffer
             announce: [config.TRACKER], // list of tracker server urls
             port: 6881, // torrent client port, (in browser, optional)
             getAnnounceOpts: function () {

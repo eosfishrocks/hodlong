@@ -3,7 +3,7 @@ Feature: Create a new DownloadManager Instance
     Given a download manager
     When I add a magnet id to the manager
     Then a promise is returned
-    And the promise contains the current download status
+    Then and the promise contains the current download status
 
   Scenario:
     Given a download manager
