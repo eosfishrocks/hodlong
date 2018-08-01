@@ -16,3 +16,9 @@ Feature: Create a new DownloadManager Instance
     Then the download finishes and gets added to the background
     And a separate client requests the same id
     Then the download is added back to the active connections
+
+  Scenario: When connecting to the hodl network, grab the default config infoHash
+    Given a connection to the eos contract
+    When I request the configInfoHash
+    Then the configInfoHash is returned
+    And the download manager starts while downloading the default config.
