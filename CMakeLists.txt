@@ -27,7 +27,11 @@ include_directories(${EOSIO_INSTALL_DIR}/include/musl/upstream/include)
 include_directories(${BOOST_INSTALL_DIR}/include)
 
 set(CPP_FILES src/contracts/Users.cpp
-        src/contracts/Marketplace.cpp)
+        src/contracts/Marketplace.cpp
+        src/contracts/Config.cpp
+        src/contracts/Token.cpp
+        src/contracts/Trackers.cpp
+        src/contracts/TrackerPool.cpp)
 
 set(HPP_FILES)
 
