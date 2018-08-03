@@ -31,7 +31,8 @@ set(CPP_FILES src/contracts/Users.cpp
         src/contracts/Config.cpp
         src/contracts/Token.cpp
         src/contracts/Trackers.cpp
-        src/contracts/TrackerPool.cpp)
+        src/contracts/TrackerPool.cpp
+        src/contracts/TrackerVote.cpp)
 
 set(HPP_FILES)
 

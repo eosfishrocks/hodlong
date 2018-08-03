@@ -64,4 +64,21 @@ defineFeature(feature, test => {
             pending();
         });
     });
+    test('When connecting to the hodl network, grab the default config infoHash', ({ given, when, then, pending }) => {
+        given('a connection to the eos contract', () => {
+            pending();
+        });
+
+        when('I request the configInfoHash', () => {
+            pending();
+        });
+
+        then('the configInfoHash is returned', () => {
+            pending();
+        });
+
+        then('the download manager starts while downloading the default config.', () => {
+            pending();
+        });
+    });
 });

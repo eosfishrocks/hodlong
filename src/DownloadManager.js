@@ -15,8 +15,8 @@ const DownloadManger = class DownloadManager {
         this.infohash = infohash;
 
         if (!opts) this.opts = {
-            infoHash: new Buffer(this.infohash),
-            peerId: new Buffer(this.peerid), // hex string or Buffer
+            infoHash: new Buffer.from(this.infohash),
+            peerId: new Buffer.from(this.peerid), // hex string or Buffer
             announce: [config.TRACKER], // list of tracker server urls
             port: 6881, // torrent client port, (in browser, optional)
             getAnnounceOpts: function () {
@@ -26,7 +26,7 @@ const DownloadManger = class DownloadManager {
                     uploaded: 0,
                     downloaded: 0,
                     left: 0,
-                    customParam: 'blah' // custom parameters supported
+                    customParam: config.PUBLICKEY
                 }
             },
             // RTCPeerConnection config object (only used in browser)

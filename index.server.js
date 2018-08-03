@@ -1,4 +1,3 @@
-import Server from 'bittorrent-tracker'
 var Server = require('bittorrent-tracker').Server;
 var config = require('./src/config');
 var EOS = require('eosjs');
@@ -44,6 +43,12 @@ config = {
     verbose: false, // API activity
     sign: true
 };
+
+// deploy contract
+
+
+// configure info hash torrent generator
+
 
 const eos = EOS(config);
 
