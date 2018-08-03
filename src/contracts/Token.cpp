@@ -1,4 +1,4 @@
-#include "Marketplace.hpp"
+#include "Token.hpp"
 
 namespace hodlong {
     void Token::mine(account_name miner, uint64_t hashId) {

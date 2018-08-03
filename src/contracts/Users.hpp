@@ -1,6 +1,7 @@
 #include <eosiolib/eosio.hpp>
 #include <eosiolib/print.hpp>
 #include <string>
+#include <vector>
 
 namespace hodlong {
     using namespace eosio;
@@ -54,6 +55,5 @@ namespace hodlong {
         typedef multi_index<N(user), user> userIndex;
     };
 
-    EOSIO_ABI(Users, (add)(update)(getuser)
-    (storageIds));
+    EOSIO_ABI(Users, (add)(update)(getuser)(storageIds));
 }
