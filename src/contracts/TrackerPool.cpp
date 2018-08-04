@@ -14,7 +14,7 @@ namespace hodlong {
         }
 
     }
-    void Trackers::remove(account_name account, string& tracker_url){
+    void TrackerPool::remove(account_name account, string& tracker_url){
         require_auth(account);
 
         trackerIndex  trackers(_self, _self);
@@ -23,7 +23,7 @@ namespace hodlong {
 
         trackers.erase(iterator);
     }
-    void Trackers::remove(account_name account, string& tracker_url){
+    void TrackerPool::update(account_name account, string& tracker_url){
         require_auth(account);
 
         trackersIndex trackers(_self, _self);

@@ -21,16 +21,14 @@ namespace hodlong {
 
         //@abi action
         void removeFromApproved(account_name account, string&)
-        
-        
+
+
     private:
 
         //@abi table pool i64
         struct pool {
             vector <Trackers> approvedTrackers;
             vector <TrackerVotes> pendingTrackerVotes;
-
-
             EOSLIB_SERIALIZE(TrackerPool, (approvedTrackers)(pendingTrackers)
             );
         };
