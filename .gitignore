@@ -5,3 +5,5 @@ node_modules
 cmake-build-debug
 build
 cmake-build-release
+**/*.abi
+**/*.wast

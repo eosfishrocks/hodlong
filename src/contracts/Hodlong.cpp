@@ -2,23 +2,26 @@
 #include <eosiolib/print.hpp>
 #include <string>
 #include <vector>
+#include "Users.hpp"
 
+// Main contract interface
 namespace hodlong {
     using namespace eosio;
     using std::string;
 
-    class Users : public contract {
+    class Hodlong : public contract {
         using contract::contract;
 
     public:
 
-        Users(account_name self) : contract(self) {}
+        Hodlong(account_name self)
+        : contract(self) {},
 
         // @abi action
-        void add(const account_name account, string &username);
+        void add_user(const account_name account, string& username);
 
         // @abi action
-        void getuser(const account_name account);
+        void get_user(const account_name account);
 
     private:
 

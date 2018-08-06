@@ -19,7 +19,7 @@ namespace hodlong {
         void getbyid(uint64_t bidId);
 
         //@abi action
-        void add(account_name account, product bidBid);
+        void add(account_name account, bid newbid);
 
         //@abi action
         void update(account_name account, uint64_t bid_id, uint64_t quantity);

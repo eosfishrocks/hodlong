@@ -1,43 +1,83 @@
+/**
+ *  @file
+ *  @copyright defined in eos/LICENSE.txt
+ */
+#pragma once
+
+#include <eosiolib/asset.hpp>
 #include <eosiolib/eosio.hpp>
-#include <eosiolib/print.hpp>
+
 #include <string>
 
-namespace hodlong {
-    using namespace eosio;
-    using std::string;
+namespace eosiosystem {
+   class system_contract;
+}
 
-    class Token : public contract {
-        using contract::contract;
+namespace eosio {
 
-    public:
+   using std::string;
 
-        Token(account_name self) : contract(self) {}
+   class token : public contract {
+      public:
+         token( account_name self ):contract(self){}
 
-        //@abi action
-        void mine(account_name buyer, uint64_t bidId);
+         void create( account_name issuer,
+                      asset        maximum_supply);
 
-        //@abi action
-        void transfer(account_name sender, account_name receiver, asset quantity, string& memo)
-        //@abi action
-        void getbyid(uint64_t tokenId);
+         void issue( account_name to, asset quantity, string memo );
 
-        //@abi action
-        void verify(account_name account, uint64_t hashid);
+         void transfer( account_name from,
+                        account_name to,
+                        asset        quantity,
+                        string       memo );
+      
+      
+         inline asset get_supply( symbol_name sym )const;
+         
+         inline asset get_balance( account_name owner, symbol_name sym )const;
 
-    private:
+      private:
+         struct account {
+            asset    balance;
 
-        //@abi table user i64
-        struct bid {
-            uint64_t token_id;
-            account_name account;
+            uint64_t primary_key()const { return balance.symbol.name(); }
+         };
 
-            uint64_t primary_key() const { return bid_id; }
+         struct currency_stats {
+            asset          supply;
+            asset          max_supply;
+            account_name   issuer;
 
-            EOSLIB_SERIALIZE(bid, (bid_id)(quantity)(price)
-            )
-        };
+            uint64_t primary_key()const { return supply.symbol.name(); }
+         };
 
+         typedef eosio::multi_index<N(accounts), account> accounts;
+         typedef eosio::multi_index<N(stat), currency_stats> stats;
 
-        EOSIO_ABI(Users,
-        );
-    }
+         void sub_balance( account_name owner, asset value );
+         void add_balance( account_name owner, asset value, account_name ram_payer );
+
+      public:
+         struct transfer_args {
+            account_name  from;
+            account_name  to;
+            asset         quantity;
+            string        memo;
+         };
+   };
+
+   asset token::get_supply( symbol_name sym )const
+   {
+      stats statstable( _self, sym );
+      const auto& st = statstable.get( sym );
+      return st.supply;
+   }
+
+   asset token::get_balance( account_name owner, symbol_name sym )const
+   {
+      accounts accountstable( _self, owner );
+      const auto& ac = accountstable.get( sym );
+      return ac.balance;
+   }
+
+} /// namespace eosio
