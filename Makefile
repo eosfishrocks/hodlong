@@ -1,6 +1,6 @@
 EOSIOCPP = eosiocpp
 
-build : users token marketplace
+build : users marketplace token trackers
 
 token :
 	$(EOSIOCPP) -o ./src/contracts/Token.wast ./src/contracts/Token.cpp 
