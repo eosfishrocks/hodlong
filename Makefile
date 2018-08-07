@@ -1,13 +1,14 @@
 EOSIOCPP = eosiocpp
 
-build : users marketplace token trackers
+build : users token trackers
 
-token :
-	$(EOSIOCPP) -o ./src/contracts/Token.wast ./src/contracts/Token.cpp 
 
 marketplace :
 	$(EOSIOCPP) -o ./src/contracts/Marketplace.wast ./src/contracts/Marketplace.cpp && \
 		$(EOSIOCPP) -g ./src/contracts/Marketplace.abi ./src/contracts/Marketplace.cppmarketplace :
+
+token :
+	$(EOSIOCPP) -o ./src/contracts/Token.wast ./src/contracts/Token.cpp
 
 trackers :
 	$(EOSIOCPP) -o ./src/contracts/Trackers.wast ./src/contracts/Trackers.cpp && \
