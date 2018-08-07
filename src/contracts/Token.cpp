@@ -5,7 +5,7 @@
 
 #include "Token.hpp"
 
-namespace eosio {
+namespace hodlong {
 
 void token::create( account_name issuer,
                     asset        maximum_supply )

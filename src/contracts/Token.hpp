@@ -9,7 +9,7 @@
 
 #include <string>
 
-namespace eosiosystem {
+namespace hodlong {
    class system_contract;
 }
 
