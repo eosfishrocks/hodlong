@@ -15,13 +15,13 @@ namespace hodlong {
         Trackers(account_name self) : contract(self) {}
 
         //@abi action
-        void add(account_name account, string& url)
+        void add(const account_name account, string& url);
 
         //@abi action
-        void remove(account_name account, string& url)
+        void remove(const account_name account, string& url);
 
         //@abi action
-        void update(account_name account, string& url)
+        void update(const account_name account, string& url);
 
     private:
 
@@ -29,11 +29,11 @@ namespace hodlong {
         struct tracker {
             uint64_t tracker_id;
             string url;
-            account_name <string> account_name;
+            account_name account;
 
-            uint64_t primary_key() const { return account_name; }
+            uint64_t primary_key() const { return tracker_id; }
 
-            EOSLIB_SERIALIZE(user, (tracker_id)(url)(account_name)
+            EOSLIB_SERIALIZE(tracker, (tracker_id)(url)(account)
             );
         };
 

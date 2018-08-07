@@ -1,7 +1,7 @@
 #include "Trackers.hpp"
 
 namespace hodlong {
-    void Trackers::add(account_name account, string& tracker_url){
+    void Trackers::add(const account_name account, string& tracker_url){
         require_auth(account);
 
         trackerIndex  trackers(_self, _self);
@@ -14,7 +14,7 @@ namespace hodlong {
         }
 
     }
-    void Trackers::remove(account_name account, string& tracker_url){
+    void Trackers::remove(const account_name account, string& tracker_url){
         require_auth(account);
 
         trackerIndex  trackers(_self, _self);
@@ -23,7 +23,7 @@ namespace hodlong {
 
         trackers.erase(iterator);
     }
-    void Trackers::update(account_name account, string& tracker_url){
+    void Trackers::update(const account_name account, string& tracker_url){
         require_auth(account);
 
         trackersIndex trackers(_self, _self);

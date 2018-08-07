@@ -7,7 +7,11 @@ token :
 
 marketplace :
 	$(EOSIOCPP) -o ./src/contracts/Marketplace.wast ./src/contracts/Marketplace.cpp && \
-		$(EOSIOCPP) -g ./src/contracts/Marketplace.abi ./src/contracts/Marketplace.cpp
+		$(EOSIOCPP) -g ./src/contracts/Marketplace.abi ./src/contracts/Marketplace.cppmarketplace :
+
+trackers :
+	$(EOSIOCPP) -o ./src/contracts/Trackers.wast ./src/contracts/Trackers.cpp && \
+		$(EOSIOCPP) -g ./src/contracts/Trackers.abi ./src/contracts/Trackers.cpp
 
 users :
 	$(EOSIOCPP) -o ./src/contracts/Users.wast ./src/contracts/Users.cpp && \
