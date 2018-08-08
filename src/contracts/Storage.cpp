@@ -5,8 +5,6 @@
 #include <eosiolib/print.hpp>
 #include <string>
 #include <vector>
-#include "Storage.cpp"
-
 
 namespace hodlong {
     using namespace eosio;
@@ -23,7 +21,7 @@ namespace hodlong {
         uint64_t primary_key() const { return account; }
 
         EOSLIB_SERIALIZE(storage, (account)(filename)(file_size)(path)(checksum)
-        )
+        );
     };
 
     typedef multi_index<N(storage), storage> storageIndex;
