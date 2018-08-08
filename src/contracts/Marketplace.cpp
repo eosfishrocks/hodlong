@@ -10,12 +10,12 @@ namespace hodlong {
         auto bid = bids.get(bidId);
         eosio_assert(bid.quantity > 0, "The bid is out of stock");
 
-        asset bidPrice = asset(bid.price, string_to_symbol(4, "OAS"));
+        asset bidPrice = asset(bid.price, string_to_symbol(4, "HDONG"));
 
         action(vector<permission_level>(), N(anorak), N(transfer),
-               make_tuple(buyer, _self, bidPrice, string(""))).send();
+               std::make_tuple(buyer, _self, bidPrice, string(""))).send();
 
-        action(vector<permission_level>(), N(anorak), N(additem), make_tuple(buyer,
+        action(vector<permission_level>(), N(anorak), N(additem), std::make_tuple(buyer,
                                                                              bid.bid_id,
                                                                              bid.quantity,
                                                                              bid.price
@@ -34,18 +34,17 @@ namespace hodlong {
         auto bid = bids.get(bidId);
     }
 
-    void Marketplace::add(account_name account, bid newbid) {
+    void Marketplace::add(account_name account, bid newBid) {
         require_auth(account);
 
         bidIndex bids(_self, _self);
 
-        auto iterator = bids.find(newbid.bid_id);
+        auto iterator = bids.find(newBid.bid_id);
         eosio_assert(iterator == bids.end(), "bid for this ID already exists");
 
         bids.emplace(account, [&](auto &bid) {
-            bid.bid_id = newbid.bid_id;
-            bid.quanity = newbid.quantity;
-            bid.price = newbid.price;
+            bid.bid_id = newBid.bid_id;
+            bid.price = newBid.price;
         });
     }
 

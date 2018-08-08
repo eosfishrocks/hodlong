@@ -1,6 +1,11 @@
 #include <eosiolib/eosio.hpp>
 #include <eosiolib/print.hpp>
+#include <eosiolib/symbol.hpp>
+#include <eosiolib/asset.hpp>
+#include <eosiolib/contract.hpp>
 #include <string>
+#include "MarketplaceBid.cpp"
+
 
 namespace hodlong {
     using namespace eosio;
@@ -12,35 +17,24 @@ namespace hodlong {
     public:
 
         Marketplace(account_name self) : contract(self) {}
-        //@abi action
+
+        // @abi action
         void buy(account_name buyer, uint64_t bidId);
 
-        //@abi action
+        // @abi action
         void getbyid(uint64_t bidId);
 
-        //@abi action
-        void add(account_name account, bid newbid);
+        // @abi action
+        void add(account_name account, bid newBid);
 
-        //@abi action
+        // @abi action
         void update(account_name account, uint64_t bid_id, uint64_t quantity);
 
-        //@abi action
+        // @abi action
         void remove(account_name account, uint64_t bidId);
 
-    private:
 
-        //@abi table user i64
-        struct bid {
-            uint64_t bid_id;
-            uint64_t quantity;
-            uint64_t price;
+    };
 
-            uint64_t primary_key() const { return bid_id; }
-
-            EOSLIB_SERIALIZE(bid, (bid_id)(quantity)(price))
-        };
-
-
-
-    EOSIO_ABI(Users, );
+    EOSIO_ABI(Marketplace,(buy)(getbyid)(add)(update)(remove));
 }
