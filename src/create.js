@@ -14,8 +14,9 @@ export default function create(input, eos, account, shortname){
     createTorrent(input, opts, (err, torrent) => {
 
         if (!err) {
-            // TODO: Push magnet to EOS User contract-storage struct.
-
+            eos.transaction('Users', users => {
+                users.addstorage(account, filename)
+            });
             // return torrent to be added to client for upload to superpeer
             return torrent;
         }
