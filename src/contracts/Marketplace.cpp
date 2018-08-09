@@ -22,19 +22,11 @@ namespace hodlong {
 
         )).send();
 
-        update(buyer, bid.bid_id, -1);
+        updatebid(buyer, bid.bid_id, -1);
     }
 
-    void Marketplace::getbyid(uint64_t bidId) {
-        bidIndex bids(_self, _self);
 
-        auto iterator = bids.find(bidId);
-        eosio_assert(iterator != bids.end(), "bid not found");
-
-        auto bid = bids.get(bidId);
-    }
-
-    void Marketplace::add(account_name account, bid newBid) {
+    void Marketplace::addbid(account_name account, bid newBid) {
         require_auth(account);
 
         bidIndex bids(_self, _self);
@@ -48,7 +40,7 @@ namespace hodlong {
         });
     }
 
-    void Marketplace::update(account_name account, uint64_t bid_id, uint64_t quantity) {
+    void Marketplace::updatebid(account_name account, uint64_t bid_id, uint64_t quantity) {
         require_auth(account);
 
         bidIndex bids(_self, _self);
@@ -61,7 +53,7 @@ namespace hodlong {
         });
     }
 
-    void Marketplace::remove(account_name account, uint64_t bidId) {
+    void Marketplace::removebid(account_name account, uint64_t bidId) {
         require_auth(account);
 
         bidIndex bids(_self, _self);
@@ -71,4 +63,22 @@ namespace hodlong {
 
         bids.erase(iterator);
     }
+
+    void Marketplace::createobj(account_name account, hodlong::Marketplace::storage newObj) {
+        require_auth(account);
+
+        storageIndex objs(_self, _self);
+
+        auto iterator = objs.find(newObj.storage_id);
+        eosio_assert(iterator == objs.end(), "Obj for this ID already exists");
+
+        objs.emplace(account, [&](auto &obj) {
+            obj.storage_id = newObj.storage_id;
+            obj.account = newObj.account;
+            obj.filename = newObj.filename;
+            obj.file_size = newObj.file_size;
+            obj.checksum = newObj.checksum;
+        });
+    }
+
 }

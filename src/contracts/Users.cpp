@@ -2,9 +2,7 @@
 
 namespace hodlong {
     void Users::add(const account_name account, string &username) {
-
         require_auth(account);
-
         userIndex users(_self, _self);
 
         auto iterator = users.find(account);
@@ -18,17 +16,7 @@ namespace hodlong {
 
     }
 
-    void Users::getuser(const account_name account) {
-        userIndex users(_self, _self);
-
-        auto iterator = users.find(account);
-        eosio_assert(iterator != users.end(), "Address for account not found");
-
-        auto currentUser = users.get(account);
-        print("Username: ", currentUser.username.c_str());
-    }
-
-    void Users::addstorage(account_name account, storage obj) {
+    void Users::addstorage(account_name account, uint64_t storageId) {
         require_auth(account);
         userIndex users(_self, _self);
 
@@ -36,14 +24,7 @@ namespace hodlong {
         eosio_assert(iterator != users.end(), "Address for account not found");
 
         users.modify(iterator, account, [&](auto& user) {
-            user.storage_objs.push_back(storage{
-                obj.account,
-                obj.filename,
-                obj.file_size,
-                obj.path,
-                obj.checksum,
-            });
+            user.storage_objs.push_back(storageId);
         });
-
     }
 }

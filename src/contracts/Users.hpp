@@ -2,7 +2,7 @@
 #include <eosiolib/print.hpp>
 #include <string>
 #include <vector>
-#include "Storage.cpp"
+
 
 namespace hodlong {
     using namespace eosio;
@@ -19,10 +19,7 @@ namespace hodlong {
         void add(const account_name account, string &username);
 
         // @abi action
-        void getuser(const account_name account);
-
-        // @abi action
-        void addstorage(account_name account, storage obj);
+        void addstorage(const account_name account, uint64_t storageId);
 
     private:
 
@@ -30,7 +27,7 @@ namespace hodlong {
         struct user {
             uint64_t account_name;
             string username;
-            vector <storage> storage_objs;
+            vector <uint64_t> storage_objs;
 
             uint64_t primary_key() const { return account_name; }
 
@@ -40,5 +37,5 @@ namespace hodlong {
         typedef multi_index<N(user), user> userIndex;
     };
 
-    EOSIO_ABI(Users, (add)(getuser));
+    EOSIO_ABI(Users, (add));
 }
