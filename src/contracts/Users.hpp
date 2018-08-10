@@ -19,7 +19,13 @@ namespace hodlong {
         void add(const account_name account, string &username);
 
         // @abi action
-        void addstorage(const account_name account, uint64_t storageId);
+        void createobj(const account_name account, uint64_t storageId);
+
+        // @abi action
+        void addseed(const account_name account, uint64_t storageId);
+
+        // @abi action
+        void removeseed(const account_name account, uint64_t storageId);
 
     private:
 
@@ -27,15 +33,15 @@ namespace hodlong {
         struct user {
             uint64_t account_name;
             string username;
-            vector <uint64_t> storage_objs;
+            vector <uint64_t> ownedObjects;
+            vector <uint64_t> seededObjects;
 
             uint64_t primary_key() const { return account_name; }
 
-            EOSLIB_SERIALIZE(user, (account_name)(username)
-            );
+            EOSLIB_SERIALIZE(user, (account_name)(username)(ownedObjects)(seededObjects));
         };
         typedef multi_index<N(user), user> userIndex;
     };
 
-    EOSIO_ABI(Users, (add));
+    EOSIO_ABI(Users, (add)(createobj)(addseed)(removeseed));
 }

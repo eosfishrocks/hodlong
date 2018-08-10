@@ -16,7 +16,7 @@ namespace hodlong {
 
     }
 
-    void Users::addstorage(account_name account, uint64_t storageId) {
+    void Users::createobj(account_name account, uint64_t storageId) {
         require_auth(account);
         userIndex users(_self, _self);
 
@@ -24,7 +24,35 @@ namespace hodlong {
         eosio_assert(iterator != users.end(), "Address for account not found");
 
         users.modify(iterator, account, [&](auto& user) {
-            user.storage_objs.push_back(storageId);
+            user.ownedObjects.push_back(storageId);
         });
     }
+
+    void Users::addseed(account_name account, uint64_t storageId) {
+        require_auth(account);
+        userIndex users(_self, _self);
+
+        auto iterator = users.find(account);
+        eosio_assert(iterator != users.end(), "Address for account not found");
+
+        users.modify(iterator, account, [&](auto& user) {
+            user.seededObjects.push_back(storageId);
+        });
+    }
+    void Users::removeseed(const account_name account, uint64_t storageId) {
+        require_auth(account);
+        userIndex users(_self, _self);
+
+        auto iterator = users.find(account);
+        eosio_assert(iterator != users.end(), "Address for account not found");
+
+        users.modify(iterator, account, [&](auto& user) {
+
+            auto position = find(user.seededObjects.begin(), user.seededObjects.end(), 8);
+            if (position != user.seededObjects.end()) // == myVector.end() means the element was not found
+                user.seededObjects.erase(position);
+        });
+    }
+
+
 }

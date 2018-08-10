@@ -2,36 +2,21 @@ var Server = require('bittorrent-tracker').Server;
 var config = require('./src/config');
 var EOS = require('eosjs');
 var express = require('express');
-var ProofOfStorage = require('./src/ProofOfStorage');
-var ProofOfSeed = require('./src/ProofOfSeed');
+var BigNumber = require('bignumber.js');
+
+
 var app = express();
 var magnetWhitelist = {};
 var test = false;
 
 
-if (process.env.__ENV__ === 'test'){
+if (process.env.__ENV__ === 'test') {
     test = true;
 }
 
 var whitelist = {
     UT: true // uTorrent
 };
-
-if (config.PRIVATE_KEY = ""){
-    config.PRIVATE_KEY = process.env.PRIVATE_KEY;
-}
-
-var server = new Server({
-    http: false, // we do our own
-    udp: false, // not interested
-    ws: true, // enabled to allow browser connections
-    filter: function (infoHash, params, cb) {
-        // black/whitelist for disallowing/allowing specific clients [default=allow all]
-        // this example only allows the uTorrent client
-
-    }
-});
-
 
 // Default configuration (additional options below)
 config = {
@@ -44,22 +29,50 @@ config = {
     sign: true
 };
 
-// deploy contract
-
-
-// configure info hash torrent generator
-
 
 const eos = EOS(config);
+
+let approvedObjects = [];
+let account = BigNumber(EOS.modules.format.encodeName("hodlong"));
+
+eos.getTableRows({
+    json: true,
+    code: 'hodlong',
+    scope: 'hodlong',
+    table: 'user',
+    table_key: 'userIndex',
+    limit: 1
+})
+    .then((result) => {
+        console.log(result.rows)
+        for (row in result.rows){
+            for (obj in result.rows[0].seededObjects){
+                approvedObjects.push(result.rows[0].seededObjects[obj]);
+            }
+        }
+        console.log(approvedObjects);
+    })
+    .catch((err) => {console.log(err)});
+
+
+var server = new Server({
+    http: false, // we do our own
+    udp: false, // not interested
+    ws: true, // enabled to allow browser connections
+    filter: function (infoHash, params, cb) {
+        // black/whitelist for disallowing/allowing specific clients [default=allow all]
+        // this example only allows the uTorrent client
+        if (approvedObjects.indexOf(infoHash) > 0){
+            cb(null);
+        }
+        else{
+            cb(new Error('disallowed object'));
+        }
+    }
+});
 
 var onHttpRequest = server.onHttpRequest.bind(server);
 app.get('/announce', onHttpRequest);
 app.get('/scrape', onHttpRequest);
 
 app.listen(config.TRACKER_PORT);
-
-// Proof of Seed runtime
-while(config.SERVER === "active"){
-    ProofOfSeed(eos, server);
-    ProofOfStorage(eos, server);
-}
