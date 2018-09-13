@@ -1,20 +1,21 @@
 # HODLONG
 
-> A peer-to-peer hypermedia protocol to make the web faster, safer, and more open based off of webRTC and webtorrent.
+> A peer-to-peer hypermedia protocol to make the web faster, safer, and more open based off of webRTC and webtorrent. Development contributers include BPFish, EosHuobipool, Eosflytomars, EosCannonch, and ZbEOSpool.
 
 
 ## Overview
 
 [HODLONG](https://github.com/ipfs/faq/issues/76) is a universal javascript library that allows secure content to distributed to any platform. By using crypto shims, the library can run on a browser, a react-native applciation, or a electron built executable. HODLONG enables the creation of completely distributed applications. It aims to make the web faster, safer, and more open.
 
-HODLONG is a distributed file system that seeks to connect all computing devices with the same system of files. In some ways, this is similar to the original aims of the Web, but HODLONG is actually more similar to a single bittorrent swarm exchanging objects over 
+HODLONG is a distributed file store that seeks to connect all computing devices with the same system of files. In some ways, this is similar to the original aims of the Web, but HODLONG is actually more similar to a single bittorrent swarm exchanging objects over
 
 
 ## What is HODLONG
 
-HODLONG is a protocol:
-- defines a content-addressed file system
+HODLONG is a web torrent protocol:
+- defines a content-addressed file store
 - coordinates content delivery
+- coordinates statistics verification across nodes.
 - combines Webtorrent-DHT + Webtorrent + A modular approach to blockchain storage mechanisms.
 
 HODLONG is not a filesystem:
@@ -56,3 +57,7 @@ This is currently at the pre-alpha, Proof-of-concept,stage, and not ready for pr
 ## License
 
 MIT. This project and README are inspired by the IPFS project, but they do not share any code. 
+
+## Contributers
+
+HODLONG is a EOSFish, EosHuobipool, Eosflytomars, and EosCannonch project.
