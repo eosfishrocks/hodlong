@@ -1,6 +1,6 @@
 # HODLONG
 
-> A peer-to-peer hypermedia protocol to make the web faster, safer, and more open based off of webRTC and webtorrent. Development contributers include BPFish, EosCannon, Eosflytomars, EosHuobipool, Starteos, and ZbEOSpool.
+> A peer-to-peer hypermedia protocol to make the web faster, safer, and more open based off of webRTC and webtorrent. Development contributers include BPFish, Atticlab, 86Syndicate EosCannon, Eosflytomars, EosHuobipool, Starteos, and ZbEOSpool.
 
 
 ## Overview
