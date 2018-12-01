@@ -1,42 +1,124 @@
 {
-  "name": "HODLONG",
-  "version": "0.0.1",
+  "name": "webtorrent",
+  "description": "Streaming torrent client",
+  "version": "0.102.4",
+  "author": {
+    "name": "WebTorrent, LLC",
+    "email": "feross@webtorrent.io",
+    "url": "https://webtorrent.io"
+  },
+  "browser": {
+    "./lib/server.js": false,
+    "./lib/tcp-pool.js": false,
+    "bittorrent-dht/client": false,
+    "fs-chunk-store": "memory-chunk-store",
+    "load-ip-set": false,
+    "net": false,
+    "os": false,
+    "ut_pex": false
+  },
+  "browserify": {
+    "transform": [
+      "package-json-versionify"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/webtorrent/webtorrent/issues"
+  },
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "bignumber.js": "^7.2.1",
-    "bittorrent-tracker": "^9.9.1",
-    "create-torrent": "^3.32.1",
-    "eosjs": "^15.0.3",
-    "express": "^4.16.3",
-    "lscache": "^1.2.0",
-    "webtorrent": "^0.100.0",
-    "workerpool": "^2.3.0"
+    "addr-to-ip-port": "^1.4.2",
+    "bitfield": "^2.0.0",
+    "bittorrent-dht": "^9.0.0",
+    "bittorrent-protocol": "^3.0.0",
+    "chunk-store-stream": "^3.0.1",
+    "create-torrent": "^3.33.0",
+    "cryptico": "^1.0.2",
+    "debug": "^4.0.1",
+    "end-of-stream": "^1.1.0",
+    "fs": "0.0.1-security",
+    "fs-chunk-store": "^1.6.2",
+    "immediate-chunk-store": "^2.0.0",
+    "load-ip-set": "^2.1.0",
+    "memory-chunk-store": "^1.2.0",
+    "mime": "^2.2.0",
+    "multistream": "^2.0.5",
+    "package-json-versionify": "^1.0.2",
+    "parse-numeric-range": "^0.0.2",
+    "parse-torrent": "^6.1.2",
+    "pump": "^3.0.0",
+    "random-iterate": "^1.0.1",
+    "randombytes": "^2.0.3",
+    "range-parser": "^1.2.0",
+    "readable-stream": "^3.0.2",
+    "render-media": "^3.0.0",
+    "run-parallel": "^1.1.6",
+    "run-parallel-limit": "^1.0.3",
+    "safe-buffer": "^5.0.1",
+    "simple-concat": "^1.0.0",
+    "simple-get": "^3.0.1",
+    "simple-peer": "^9.0.0",
+    "simple-sha1": "^2.0.8",
+    "speedometer": "^1.0.0",
+    "stream-to-blob": "^1.0.0",
+    "stream-to-blob-url": "^2.1.0",
+    "stream-with-known-length-to-buffer": "^1.0.0",
+    "torrent-discovery": "^9.1.1",
+    "torrent-piece": "^2.0.0",
+    "uniq": "^1.0.1",
+    "unordered-array-remove": "^1.0.2",
+    "ut_metadata": "^3.3.0",
+    "ut_pex": "^1.1.1"
   },
   "devDependencies": {
-    "babel-preset-env": "*",
-    "jest-cucumber": "^1.0.7",
-    "jest-localstorage-mock": "^2.2.0"
+    "airtap": "0.1.0",
+    "babel-minify": "^0.5.0",
+    "bittorrent-tracker": "^9.4.0",
+    "brfs": "^2.0.0",
+    "browserify": "^16.0.0",
+    "cross-spawn": "^6.0.3",
+    "electron": "^3.0.2",
+    "finalhandler": "^1.0.0",
+    "network-address": "^1.1.0",
+    "run-series": "^1.1.4",
+    "serve-static": "^1.11.1",
+    "standard": "*",
+    "tape": "^4.6.0",
+    "webtorrent-fixtures": "^1.5.0"
   },
-  "main": "index.server.js",
+  "engines": {
+    "node": ">=4"
+  },
+  "homepage": "https://webtorrent.io",
+  "keywords": [
+    "bittorrent",
+    "bittorrent client",
+    "download",
+    "mad science",
+    "p2p",
+    "peer-to-peer",
+    "peers",
+    "streaming",
+    "swarm",
+    "torrent",
+    "web torrent",
+    "webrtc",
+    "webrtc data",
+    "webtorrent"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/webtorrent/webtorrent.git"
+  },
   "scripts": {
-    "build": "babel src -d build",
-    "server": "node index.server.js",
-    "test": "jest",
-    "test-server": "__ENV__=test node index.server.js"
-  },
-  "jest": {
-    "verbose": true,
-    "testMatch": [
-      "**/*.steps.js"
-    ],
-    "setupFiles": [
-      "jest-localstorage-mock"
-    ],
-    "testURL": "http://localhost/",
-    "globals": {
-      "__DEV__": true,
-      "__SAMPLE_IMAGE_FILE": "./__tests__/sample.jpg"
-    }
+    "build": "browserify -s WebTorrent -e ./ | minify > webtorrent.min.js",
+    "build-debug": "browserify -s WebTorrent -e ./ > webtorrent.debug.js",
+    "size": "npm run build && cat webtorrent.min.js | gzip | wc -c",
+    "test": "standard && npm run test-node && npm run test-browser",
+    "test-browser": "airtap -- test/*.js test/browser/*.js",
+    "test-browser-local": "airtap --local -- test/*.js test/browser/*.js",
+    "test-node": "tape test/*.js test/node/*.js",
+    "update-authors": "./scripts/update-authors.sh"
   }
 }
