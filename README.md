@@ -1,11 +1,11 @@
 # HODLONG
 
-> A peer-to-peer hypermedia protocol to make the web faster, safer, and more open based off of webRTC and webtorrent. Development contributers include BPFish, Atticlab, 86Syndicate EosCannon, Eosflytomars, EosHuobipool, Starteos, and ZbEOSpool.
+> A peer-to-peer hypermedia protocol to make the web faster, safer, and more open based off of webRTC and webtorrent. Development contributers include BPFish, Atticlab, 86Syndicate, EosCannon, Eosflytomars, Starteos, and ZbEOSpool.
 
 
 ## Overview
 
-[HODLONG](https://github.com/ipfs/faq/issues/76) is a universal javascript library that allows secure content to distributed to any platform. By using crypto shims, the library can run on a browser, a react-native applciation, or a electron built executable. HODLONG enables the creation of completely distributed applications. It aims to make the web faster, safer, and more open.
+[HODLONG](https://github.com/ipfs/faq/issues/76) is a universal javascript library that allows secure content to distributed to any platform. By using crypto shims, the library can run on a browser, a react-native application, or a electron built executable. HODLONG enables the creation of completely distributed applications. It aims to make the web faster, safer, and more open.
 
 HODLONG is a distributed file store that seeks to connect all computing devices with the same system of files. In some ways, this is similar to the original aims of the Web, but HODLONG is actually more similar to a single bittorrent swarm exchanging objects over
 
