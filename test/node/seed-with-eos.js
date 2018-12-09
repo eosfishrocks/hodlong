@@ -5,6 +5,7 @@ var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
 var WebTorrent = require('../../')
+var HAPI = require('../../../hodlong-test/hodlong-api')
 
 test('Seed and download a file at the same time from an account that gets paid', function (t) {
   t.plan(14)
@@ -14,7 +15,7 @@ test('Seed and download a file at the same time from an account that gets paid',
   dhtServer.on('error', function (err) { t.fail(err) })
   dhtServer.on('warning', function (err) { t.fail(err) })
 
-  var client1, client2
+  var client1, client2, client1hapi, client2hapi
 
   series([
     function (cb) {
@@ -22,9 +23,12 @@ test('Seed and download a file at the same time from an account that gets paid',
     },
 
     function (cb) {
+      client1hapi = HAPI({endpoint: '127.0.0.1', eosPrivateKey: 'usera', rsaPubKey: '', rsaPrivKey: '',
+          contractInfo: {'hodlong': 'hodlong', 'trackers': 'trackers'}});
       client1 = new WebTorrent({
         tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
+        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port,
+        hapi: client1hapi}
       })
 
       client1.on('error', function (err) { t.fail(err) })
