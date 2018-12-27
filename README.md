@@ -61,7 +61,7 @@ MIT. This project and README are inspired by the IPFS project, but they do not s
 ## Contributers
 
 <<<<<<< HEAD
-HODLONG is a EOSFish, EosHuobipool, Eosflytomars, and EosCannonch project.<h1 align="center">
+HODLONG is a BPFish, EosHuobipool, Eosflytomars, and EosCannonch project.<h1 align="center">
 
 
 
@@ -477,4 +477,4 @@ localStorage.removeItem('debug')
 
 MIT. Copyright (c) [Feross Aboukhadijeh](https://feross.org) and [WebTorrent, LLC](https://webtorrent.io).
 =======
-HODLONG is a EOSFish, EosHuobipool, Eosflytomars, and EosCannonch project.
+HODLONG is a BPFish, EosHuobipool, Eosflytomars, and EosCannonch project.
