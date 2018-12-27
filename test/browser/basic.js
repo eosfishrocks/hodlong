@@ -1,6 +1,6 @@
 var Buffer = require('safe-buffer').Buffer
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 var img = Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64')
 img.name = 'img.png'
@@ -21,7 +21,7 @@ if (!(global && global.process && global.process.versions && global.process.vers
   test('image append w/ query selector', function (t) {
     t.plan(6)
 
-    var client = new WebTorrent({ dht: false, tracker: false })
+    var client = new Hodlong({ dht: false, tracker: false })
 
     client.on('error', function (err) { t.fail(err) })
     client.on('warning', function (err) { t.fail(err) })
@@ -39,7 +39,7 @@ if (!(global && global.process && global.process.versions && global.process.vers
   test('image append w/ element', function (t) {
     t.plan(6)
 
-    var client = new WebTorrent({ dht: false, tracker: false })
+    var client = new Hodlong({ dht: false, tracker: false })
 
     client.on('error', function (err) { t.fail(err) })
     client.on('warning', function (err) { t.fail(err) })
@@ -57,7 +57,7 @@ if (!(global && global.process && global.process.versions && global.process.vers
   test('image render w/ query selector', function (t) {
     t.plan(6)
 
-    var client = new WebTorrent({ dht: false, tracker: false })
+    var client = new Hodlong({ dht: false, tracker: false })
 
     client.on('error', function (err) { t.fail(err) })
     client.on('warning', function (err) { t.fail(err) })
@@ -79,7 +79,7 @@ if (!(global && global.process && global.process.versions && global.process.vers
   test('image render w/ element', function (t) {
     t.plan(6)
 
-    var client = new WebTorrent({ dht: false, tracker: false })
+    var client = new Hodlong({ dht: false, tracker: false })
 
     client.on('error', function (err) { t.fail(err) })
     client.on('warning', function (err) { t.fail(err) })
@@ -98,15 +98,15 @@ if (!(global && global.process && global.process.versions && global.process.vers
   })
 }
 
-test('WebTorrent.WEBRTC_SUPPORT', function (t) {
+test('Hodlong.WEBRTC_SUPPORT', function (t) {
   t.plan(2)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 
-  t.equal(WebTorrent.WEBRTC_SUPPORT, true)
+  t.equal(Hodlong.WEBRTC_SUPPORT, true)
 
   client.destroy(function (err) {
     t.error(err, 'client destroyed')

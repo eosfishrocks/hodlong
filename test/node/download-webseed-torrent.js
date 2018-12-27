@@ -6,7 +6,7 @@ var path = require('path')
 var series = require('run-series')
 var serveStatic = require('serve-static')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 // it should be fast to download a small torrent over local HTTP
 var WEB_SEED_TIMEOUT_MS = 500
@@ -35,7 +35,7 @@ test('Download using webseed (via .torrent file)', function (t) {
         'http://localhost:' + httpServer.address().port + '/' + fixtures.leaves.parsedTorrent.name
       ]
 
-      client = new WebTorrent({ dht: false, tracker: false })
+      client = new Hodlong({ dht: false, tracker: false })
 
       client.on('error', function (err) { t.fail(err) })
       client.on('warning', function (err) { t.fail(err) })
@@ -96,7 +96,7 @@ test('Disable webseeds', function (t) {
         'http://localhost:' + httpServer.address().port + '/' + fixtures.leaves.parsedTorrent.name
       ]
 
-      client = new WebTorrent({ dht: false, tracker: false, webSeeds: false })
+      client = new Hodlong({ dht: false, tracker: false, webSeeds: false })
 
       client.on('error', function (err) { t.fail(err) })
       client.on('warning', function (err) { t.fail(err) })

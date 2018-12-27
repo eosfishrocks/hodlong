@@ -4,7 +4,7 @@ var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
 var TrackerServer = require('bittorrent-tracker/server')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('Download using UDP tracker (via .torrent file)', function (t) {
   torrentDownloadTest(t, 'udp')
@@ -39,7 +39,7 @@ function torrentDownloadTest (t, serverType) {
     },
 
     function (cb) {
-      client1 = new WebTorrent({ dht: false })
+      client1 = new Hodlong({ dht: false })
       client1.on('error', function (err) { t.fail(err) })
       client1.on('warning', function (err) { t.fail(err) })
 
@@ -69,7 +69,7 @@ function torrentDownloadTest (t, serverType) {
     },
 
     function (cb) {
-      client2 = new WebTorrent({ dht: false })
+      client2 = new Hodlong({ dht: false })
       client2.on('error', function (err) { t.fail(err) })
       client2.on('warning', function (err) { t.fail(err) })
 

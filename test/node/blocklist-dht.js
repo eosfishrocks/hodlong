@@ -2,7 +2,7 @@ var DHT = require('bittorrent-dht/server')
 var fixtures = require('webtorrent-fixtures')
 var series = require('run-series')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('blocklist blocks peers discovered via DHT', function (t) {
   t.plan(8)
@@ -18,7 +18,7 @@ test('blocklist blocks peers discovered via DHT', function (t) {
     },
 
     function (cb) {
-      client1 = new WebTorrent({
+      client1 = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
       })
@@ -55,7 +55,7 @@ test('blocklist blocks peers discovered via DHT', function (t) {
     },
 
     function (cb) {
-      client2 = new WebTorrent({
+      client2 = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port },
         blocklist: [ '127.0.0.1' ]

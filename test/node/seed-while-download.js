@@ -5,154 +5,137 @@ var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
 var WebTorrent = require('../../')
-const cryptico = require('cryptico');
-var HAPI = require('../../../hodlong-test/hodlong-api')
-
-var userAEOSPrivateKey = ''
-var userBEOSPrivateKey = ''
-var userARSAPrivatePhrase = 'Test Phrase User A'
-var userBRSAPrivatePhrase = 'Test Phrase User B'
-var userARSAPrivateKey = cryptico.generateRSAKey(userARSAPrivatePhrase, 1024)
-var userARSAPublicKey = cryptico.publicKeyString(userARSAPrivateKey)
-var userBRSAPrivateKey = cryptico.generateRSAKey(userBRSAPrivatePhrase, 1024)
-var userBRSAPublicKey = cryptico.publicKeyString(userBRSAPrivateKey)
-
-
 
 test('Seed and download a file at the same time', function (t) {
-  t.plan(14)
+    t.plan(14)
 
-  var dhtServer = new DHT({ bootstrap: false })
+    var dhtServer = new DHT({ bootstrap: false })
 
-  dhtServer.on('error', function (err) { t.fail(err) })
-  dhtServer.on('warning', function (err) { t.fail(err) })
+    dhtServer.on('error', function (err) { t.fail(err) })
+    dhtServer.on('warning', function (err) { t.fail(err) })
 
-  var client1, client2
+    var client1, client2
 
-  series([
-    function (cb) {
-      dhtServer.listen(cb)
-    },
+    series([
+        function (cb) {
+            dhtServer.listen(cb)
+        },
 
-    function (cb) {
+        function (cb) {
+            client1 = new WebTorrent({
+                tracker: false,
+                dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
+            })
 
-      var userAhapi = HAPI('127.0.0.1', 'usera', userAEOSPrivateKey, userBRSAPrivateKey, userBRSAPublicKey){
+            client1.on('error', function (err) { t.fail(err) })
+            client1.on('warning', function (err) { t.fail(err) })
 
-      client1 = new WebTorrent({
-        tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port },
-        hapi: userAhapi
-      })
+            var torrent = client1.add(fixtures.leaves.torrent, { store: MemoryChunkStore })
 
-      client1.on('error', function (err) { t.fail(err) })
-      client1.on('warning', function (err) { t.fail(err) })
+            torrent.on('dhtAnnounce', function () {
+                t.pass('client1 finished dht announce')
+                announced = true
+                maybeDone()
+            })
 
-      var torrent = client1.add(fixtures.leaves.torrent, { store: MemoryChunkStore })
+            torrent.load(fs.createReadStream(fixtures.leaves.contentPath), function (err) {
+                t.error(err, 'client1 started seeding')
+                loaded = true
+                maybeDone()
+            })
 
-      torrent.on('dhtAnnounce', function () {
-        t.pass('client1 finished dht announce')
-        announced = true
-        maybeDone()
-      })
+            var announced = false
+            var loaded = false
+            function maybeDone () {
+                if (announced && loaded) cb(null)
+            }
+        },
 
-      torrent.load(fs.createReadStream(fixtures.leaves.contentPath), function (err) {
-        t.error(err, 'client1 started seeding')
-        loaded = true
-        maybeDone()
-      })
+        function (cb) {
+            client2 = new WebTorrent({
+                tracker: false,
+                dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
+            })
 
-      var announced = false
-      var loaded = false
-      function maybeDone () {
-        if (announced && loaded) cb(null)
-      }
-    },
+            client2.on('error', function (err) { t.fail(err) })
+            client2.on('warning', function (err) { t.fail(err) })
 
-    function (cb) {
-      client2 = new WebTorrent({
-        tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
-      })
+            var torrent = client2.add(fixtures.alice.torrent, { store: MemoryChunkStore })
 
-      client2.on('error', function (err) { t.fail(err) })
-      client2.on('warning', function (err) { t.fail(err) })
+            torrent.on('dhtAnnounce', function () {
+                t.pass('client2 finished dht announce')
+                announced = true
+                maybeDone()
+            })
 
-      var torrent = client2.add(fixtures.alice.torrent, { store: MemoryChunkStore })
+            torrent.load(fs.createReadStream(fixtures.alice.contentPath), function (err) {
+                t.error(err, 'client2 started seeding')
+                loaded = true
+                maybeDone()
+            })
 
-      torrent.on('dhtAnnounce', function () {
-        t.pass('client2 finished dht announce')
-        announced = true
-        maybeDone()
-      })
+            var announced = false
+            var loaded = false
+            function maybeDone () {
+                if (announced && loaded) cb(null)
+            }
+        },
 
-      torrent.load(fs.createReadStream(fixtures.alice.contentPath), function (err) {
-        t.error(err, 'client2 started seeding')
-        loaded = true
-        maybeDone()
-      })
+        function (cb) {
+            client1.add(fixtures.alice.magnetURI, { store: MemoryChunkStore })
 
-      var announced = false
-      var loaded = false
-      function maybeDone () {
-        if (announced && loaded) cb(null)
-      }
-    },
+            client1.on('torrent', function (torrent) {
+                torrent.files[0].getBuffer(function (err, buf) {
+                    t.error(err)
+                    t.deepEqual(buf, fixtures.alice.content, 'client1 downloaded correct content')
+                    gotBuffer1 = true
+                    maybeDone()
+                })
 
-    function (cb) {
-      client1.add(fixtures.alice.magnetURI, { store: MemoryChunkStore })
+                torrent.once('done', function () {
+                    t.pass('client1 downloaded torrent from client2')
+                    gotDone1 = true
+                    maybeDone()
+                })
+            })
 
-      client1.on('torrent', function (torrent) {
-        torrent.files[0].getBuffer(function (err, buf) {
-          t.error(err)
-          t.deepEqual(buf, fixtures.alice.content, 'client1 downloaded correct content')
-          gotBuffer1 = true
-          maybeDone()
+            client2.add(fixtures.leaves.magnetURI, { store: MemoryChunkStore })
+
+            client2.on('torrent', function (torrent) {
+                torrent.files[0].getBuffer(function (err, buf) {
+                    t.error(err)
+                    t.deepEqual(buf, fixtures.leaves.content, 'client2 downloaded correct content')
+                    gotBuffer2 = true
+                    maybeDone()
+                })
+
+                torrent.once('done', function () {
+                    t.pass('client2 downloaded torrent from client1')
+                    gotDone2 = true
+                    maybeDone()
+                })
+            })
+
+            var gotBuffer1 = false
+            var gotBuffer2 = false
+            var gotDone1 = false
+            var gotDone2 = false
+            function maybeDone () {
+                if (gotBuffer1 && gotBuffer2 && gotDone1 && gotDone2) cb(null)
+            }
+        }
+
+    ], function (err) {
+        t.error(err)
+
+        client1.destroy(function (err) {
+            t.error(err, 'client1 destroyed')
         })
-
-        torrent.once('done', function () {
-          t.pass('client1 downloaded torrent from client2')
-          gotDone1 = true
-          maybeDone()
+        client2.destroy(function (err) {
+            t.error(err, 'client2 destroyed')
         })
-      })
-
-      client2.add(fixtures.leaves.magnetURI, { store: MemoryChunkStore })
-
-      client2.on('torrent', function (torrent) {
-        torrent.files[0].getBuffer(function (err, buf) {
-          t.error(err)
-          t.deepEqual(buf, fixtures.leaves.content, 'client2 downloaded correct content')
-          gotBuffer2 = true
-          maybeDone()
+        dhtServer.destroy(function (err) {
+            t.error(err, 'dht server destroyed')
         })
-
-        torrent.once('done', function () {
-          t.pass('client2 downloaded torrent from client1')
-          gotDone2 = true
-          maybeDone()
-        })
-      })
-
-      var gotBuffer1 = false
-      var gotBuffer2 = false
-      var gotDone1 = false
-      var gotDone2 = false
-      function maybeDone () {
-        if (gotBuffer1 && gotBuffer2 && gotDone1 && gotDone2) cb(null)
-      }
-    }
-
-  ], function (err) {
-    t.error(err)
-
-    client1.destroy(function (err) {
-      t.error(err, 'client1 destroyed')
     })
-    client2.destroy(function (err) {
-      t.error(err, 'client2 destroyed')
-    })
-    dhtServer.destroy(function (err) {
-      t.error(err, 'dht server destroyed')
-    })
-  })
 })

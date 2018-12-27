@@ -1,11 +1,11 @@
 {
-  "name": "webtorrent",
-  "description": "Streaming torrent client",
-  "version": "0.102.4",
+  "name": "hodlong",
+  "description": "Streaming torrent client with EOS functionality",
+  "version": "0.0.1",
   "author": {
-    "name": "WebTorrent, LLC",
-    "email": "feross@webtorrent.io",
-    "url": "https://webtorrent.io"
+    "name": "Hodlong",
+    "email": "daniel@epicdistraction.com",
+    "url": "https://github.com/eosfishrocks/hodlong"
   },
   "browser": {
     "./lib/server.js": false,
@@ -23,7 +23,7 @@
     ]
   },
   "bugs": {
-    "url": "https://github.com/webtorrent/webtorrent/issues"
+    "url": "https://github.com/eosfishrocks/hodlong/issues"
   },
   "dependencies": {
     "addr-to-ip-port": "^1.4.2",
@@ -35,6 +35,7 @@
     "cryptico": "^1.0.2",
     "debug": "^4.0.1",
     "end-of-stream": "^1.1.0",
+    "eosjs": "^20.0.0-beta2.2",
     "fs": "0.0.1-security",
     "fs-chunk-store": "^1.6.2",
     "immediate-chunk-store": "^2.0.0",
@@ -42,6 +43,7 @@
     "memory-chunk-store": "^1.2.0",
     "mime": "^2.2.0",
     "multistream": "^2.0.5",
+    "node-fetch": "^2.3.0",
     "package-json-versionify": "^1.0.2",
     "parse-numeric-range": "^0.0.2",
     "parse-torrent": "^6.1.2",
@@ -88,7 +90,7 @@
   "engines": {
     "node": ">=4"
   },
-  "homepage": "https://webtorrent.io",
+  "homepage": "https://github.com/eosfishrocks/hodlong",
   "keywords": [
     "bittorrent",
     "bittorrent client",
@@ -109,11 +111,11 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/webtorrent/webtorrent.git"
+    "url": "git://github.com/eosfishrocks/hodlong.git"
   },
   "scripts": {
-    "build": "browserify -s WebTorrent -e ./ | minify > webtorrent.min.js",
-    "build-debug": "browserify -s WebTorrent -e ./ > webtorrent.debug.js",
+    "build": "browserify -s Hodlong -e ./ | minify > hodlong.min.js",
+    "build-debug": "browserify -s Hodlong -e ./ > hodlong.debug.js",
     "size": "npm run build && cat webtorrent.min.js | gzip | wc -c",
     "test": "standard && npm run test-node && npm run test-browser",
     "test-browser": "airtap -- test/*.js test/browser/*.js",

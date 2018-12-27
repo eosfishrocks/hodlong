@@ -4,8 +4,8 @@ var fs = require('fs')
 var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
-var WebTorrent = require('../../')
-var HAPI = require('../../../hodlong-test/hodlong-api')
+var {Hodlong, HAPIz }= require('../../')
+
 
 test('Seed and download a file at the same time from an account that gets paid', function (t) {
   t.plan(14)
@@ -25,7 +25,7 @@ test('Seed and download a file at the same time from an account that gets paid',
     function (cb) {
       client1hapi = HAPI({endpoint: '127.0.0.1', eosPrivateKey: 'usera', rsaPubKey: '', rsaPrivKey: '',
           contractInfo: {'hodlong': 'hodlong', 'trackers': 'trackers'}});
-      client1 = new WebTorrent({
+      client1 = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port,
         hapi: client1hapi}
@@ -56,7 +56,7 @@ test('Seed and download a file at the same time from an account that gets paid',
     },
 
     function (cb) {
-      client2 = new WebTorrent({
+      client2 = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
       })

@@ -6,7 +6,7 @@ var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var serveStatic = require('serve-static')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('Download using webseed (via magnet uri)', function (t) {
   t.plan(9)
@@ -26,7 +26,7 @@ test('Download using webseed (via magnet uri)', function (t) {
     },
 
     function (cb) {
-      client1 = new WebTorrent({ dht: false, tracker: false })
+      client1 = new Hodlong({ dht: false, tracker: false })
 
       client1.on('error', function (err) { t.fail(err) })
       client1.on('warning', function (err) { t.fail(err) })
@@ -61,7 +61,7 @@ test('Download using webseed (via magnet uri)', function (t) {
     },
 
     function (cb) {
-      client2 = new WebTorrent({ dht: false, tracker: false })
+      client2 = new Hodlong({ dht: false, tracker: false })
 
       client2.on('error', function (err) { t.fail(err) })
       client2.on('warning', function (err) { t.fail(err) })

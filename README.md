@@ -478,4 +478,3 @@ localStorage.removeItem('debug')
 MIT. Copyright (c) [Feross Aboukhadijeh](https://feross.org) and [WebTorrent, LLC](https://webtorrent.io).
 =======
 HODLONG is a EOSFish, EosHuobipool, Eosflytomars, and EosCannonch project.
->>>>>>> 4e7b54028fdd4e5189d86029a9007dd0b1f8a87c

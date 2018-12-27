@@ -3,12 +3,12 @@
 var Buffer = require('safe-buffer').Buffer
 var fixtures = require('webtorrent-fixtures')
 var test = require('tape')
-var WebTorrent = require('../')
+var Hodlong = require('../')
 
 test('client.seed: torrent file (Buffer)', function (t) {
   t.plan(6)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -31,7 +31,7 @@ test('client.seed: torrent file (Buffer)', function (t) {
 test('client.seed: torrent file (Buffer), set name on buffer', function (t) {
   t.plan(6)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -56,7 +56,7 @@ test('client.seed: torrent file (Blob)', function (t) {
 
   t.plan(6)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })

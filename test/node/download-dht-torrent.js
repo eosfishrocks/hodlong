@@ -4,7 +4,7 @@ var fs = require('fs')
 var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('Download using DHT (via .torrent file)', function (t) {
   t.plan(10)
@@ -22,7 +22,7 @@ test('Download using DHT (via .torrent file)', function (t) {
     },
 
     function (cb) {
-      client1 = new WebTorrent({
+      client1 = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
       })
@@ -69,7 +69,7 @@ test('Download using DHT (via .torrent file)', function (t) {
     },
 
     function (cb) {
-      client2 = new WebTorrent({
+      client2 = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
       })

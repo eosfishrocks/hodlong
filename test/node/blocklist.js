@@ -2,7 +2,7 @@ var fixtures = require('webtorrent-fixtures')
 var fs = require('fs')
 var http = require('http')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 var zlib = require('zlib')
 
 function assertBlocked (t, torrent, addr) {
@@ -22,7 +22,7 @@ function assertReachable (t, torrent, addr) {
 test('blocklist (single IP)', function (t) {
   t.plan(9)
 
-  var client = new WebTorrent({
+  var client = new Hodlong({
     dht: false,
     tracker: false,
     blocklist: [ '1.2.3.4' ]
@@ -48,7 +48,7 @@ test('blocklist (single IP)', function (t) {
 test('blocklist (array of IPs)', function (t) {
   t.plan(13)
 
-  var client = new WebTorrent({
+  var client = new Hodlong({
     dht: false,
     tracker: false,
     blocklist: [ '1.2.3.4', '5.6.7.8' ]
@@ -112,7 +112,7 @@ function assertList (t, torrent) {
 
 test('blocklist (array of IP ranges)', function (t) {
   t.plan(49)
-  var client = new WebTorrent({
+  var client = new Hodlong({
     dht: false,
     tracker: false,
     blocklist: [
@@ -135,8 +135,8 @@ test('blocklist (array of IP ranges)', function (t) {
 test('blocklist (http url)', function (t) {
   t.plan(51)
   var server = http.createServer(function (req, res) {
-    // Check that WebTorrent declares a user agent
-    t.ok(req.headers['user-agent'].indexOf('WebTorrent') !== -1)
+    // Check that Hodlong declares a user agent
+    t.ok(req.headers['user-agent'].indexOf('Hodlong') !== -1)
 
     fs.createReadStream(fixtures.blocklist.path).pipe(res)
   })
@@ -144,7 +144,7 @@ test('blocklist (http url)', function (t) {
   server.listen(0, function () {
     var port = server.address().port
     var url = 'http://127.0.0.1:' + port
-    var client = new WebTorrent({
+    var client = new Hodlong({
       dht: false,
       tracker: false,
       blocklist: url
@@ -168,8 +168,8 @@ test('blocklist (http url)', function (t) {
 test('blocklist (http url with gzip encoding)', function (t) {
   t.plan(51)
   var server = http.createServer(function (req, res) {
-    // Check that WebTorrent declares a user agent
-    t.ok(req.headers['user-agent'].indexOf('WebTorrent') !== -1)
+    // Check that Hodlong declares a user agent
+    t.ok(req.headers['user-agent'].indexOf('Hodlong') !== -1)
 
     res.setHeader('content-encoding', 'gzip')
     fs.createReadStream(fixtures.blocklist.path)
@@ -180,7 +180,7 @@ test('blocklist (http url with gzip encoding)', function (t) {
   server.listen(0, function () {
     var port = server.address().port
     var url = 'http://127.0.0.1:' + port
-    var client = new WebTorrent({
+    var client = new Hodlong({
       dht: false,
       tracker: false,
       blocklist: url
@@ -204,8 +204,8 @@ test('blocklist (http url with gzip encoding)', function (t) {
 test('blocklist (http url with deflate encoding)', function (t) {
   t.plan(51)
   var server = http.createServer(function (req, res) {
-    // Check that WebTorrent declares a user agent
-    t.ok(req.headers['user-agent'].indexOf('WebTorrent') !== -1)
+    // Check that Hodlong declares a user agent
+    t.ok(req.headers['user-agent'].indexOf('Hodlong') !== -1)
 
     res.setHeader('content-encoding', 'deflate')
     fs.createReadStream(fixtures.blocklist.path)
@@ -216,7 +216,7 @@ test('blocklist (http url with deflate encoding)', function (t) {
   server.listen(0, function () {
     var port = server.address().port
     var url = 'http://127.0.0.1:' + port
-    var client = new WebTorrent({
+    var client = new Hodlong({
       dht: false,
       tracker: false,
       blocklist: url
@@ -239,7 +239,7 @@ test('blocklist (http url with deflate encoding)', function (t) {
 
 test('blocklist (fs path)', function (t) {
   t.plan(49)
-  var client = new WebTorrent({
+  var client = new Hodlong({
     dht: false,
     tracker: false,
     blocklist: fixtures.blocklist.path
@@ -258,7 +258,7 @@ test('blocklist (fs path)', function (t) {
 
 test('blocklist (fs path with gzip)', function (t) {
   t.plan(49)
-  var client = new WebTorrent({
+  var client = new Hodlong({
     dht: false,
     tracker: false,
     blocklist: fixtures.blocklist.gzipPath

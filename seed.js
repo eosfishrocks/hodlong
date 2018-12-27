@@ -1,5 +1,5 @@
 let cryptotic = require('cryptico')
-var WebTorrent = require('./index')
+var Hodlong = require('./index')
 var HAPI = require('./../hodlong-test/hodlong-api')
 
 let eosEndpoint = 'http://127.0.0.1:8888'
@@ -13,8 +13,8 @@ let publicKey = cryptotic.publicKeyString(privateKey);
 let fs = require('fs')
 let usera_hapi = new HAPI(eosEndpoint, userA, eosPrivateKeyUserA, privateKey, publicKey);
 
-var uclient = new WebTorrent()
-var sclient = new WebTorrent()
+var uclient = new Hodlong()
+var sclient = new Hodlong()
 
 var magnetURI = 'c729237ca5e6a076d984d84d598f8de101e811ce'
 

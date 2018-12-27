@@ -3,7 +3,7 @@ var fixtures = require('webtorrent-fixtures')
 var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('private torrent should not use DHT', function (t) {
   t.plan(4)
@@ -21,7 +21,7 @@ test('private torrent should not use DHT', function (t) {
     },
 
     function (cb) {
-      client = new WebTorrent({
+      client = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
       })
@@ -70,7 +70,7 @@ test('public torrent should use DHT', function (t) {
     },
 
     function (cb) {
-      client = new WebTorrent({
+      client = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
       })

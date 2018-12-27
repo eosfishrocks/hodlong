@@ -2,12 +2,12 @@ var fixtures = require('webtorrent-fixtures')
 var fs = require('fs')
 var get = require('simple-get')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('torrent.createServer: programmatic http server', function (t) {
   t.plan(9)
 
-  var client = new WebTorrent({ tracker: false, dht: false })
+  var client = new Hodlong({ tracker: false, dht: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })

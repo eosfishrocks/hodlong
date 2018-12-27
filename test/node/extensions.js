@@ -1,6 +1,6 @@
 var fixtures = require('webtorrent-fixtures')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('extension support', function (t) {
   t.plan(6)
@@ -29,12 +29,12 @@ test('extension support', function (t) {
     }
   }
 
-  var client1 = new WebTorrent({ dht: false, tracker: false })
+  var client1 = new Hodlong({ dht: false, tracker: false })
 
   client1.on('error', function (err) { t.fail(err) })
   client1.on('warning', function (err) { t.fail(err) })
 
-  var client2 = new WebTorrent({ dht: false, tracker: false })
+  var client2 = new Hodlong({ dht: false, tracker: false })
 
   client2.on('error', function (err) { t.fail(err) })
   client2.on('warning', function (err) { t.fail(err) })

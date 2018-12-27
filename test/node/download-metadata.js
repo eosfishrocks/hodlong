@@ -2,7 +2,7 @@ var fixtures = require('webtorrent-fixtures')
 var http = require('http')
 var MemoryChunkStore = require('memory-chunk-store')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 function createServer (data, cb) {
   var server = http.createServer(function (req, res) {
@@ -26,7 +26,7 @@ function createServer (data, cb) {
 test('Download metadata for magnet URI with xs parameter', function (t) {
   t.plan(3)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -44,7 +44,7 @@ test('Download metadata for magnet URI with xs parameter', function (t) {
 test('Download metadata for magnet URI with 2 xs parameters', function (t) {
   t.plan(4)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -70,7 +70,7 @@ test('Download metadata for magnet URI with 2 xs parameters', function (t) {
 test('Download metadata for magnet URI with 2 xs parameters, with 1 invalid protocol', function (t) {
   t.plan(3)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -91,7 +91,7 @@ test('Download metadata for magnet URI with 2 xs parameters, with 1 invalid prot
 test('Download metadata for magnet URI with 2 xs parameters, with 1 404 URL', function (t) {
   t.plan(3)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -112,7 +112,7 @@ test('Download metadata for magnet URI with 2 xs parameters, with 1 404 URL', fu
 test('Download metadata magnet URI with unsupported protocol in xs parameter', function (t) {
   t.plan(1)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })

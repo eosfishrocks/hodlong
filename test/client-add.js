@@ -1,12 +1,12 @@
 var Buffer = require('safe-buffer').Buffer
 var fixtures = require('webtorrent-fixtures')
 var test = require('tape')
-var WebTorrent = require('../')
+var Hodlong = require('../')
 
 test('client.add: magnet uri, utf-8 string', function (t) {
   t.plan(6)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -28,7 +28,7 @@ test('client.add: magnet uri, utf-8 string', function (t) {
 test('client.add: torrent file, buffer', function (t) {
   t.plan(6)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -50,7 +50,7 @@ test('client.add: torrent file, buffer', function (t) {
 test('client.add: info hash, hex string', function (t) {
   t.plan(6)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -72,7 +72,7 @@ test('client.add: info hash, hex string', function (t) {
 test('client.add: info hash, buffer', function (t) {
   t.plan(6)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -94,7 +94,7 @@ test('client.add: info hash, buffer', function (t) {
 test('client.add: parsed torrent, from `parse-torrent`', function (t) {
   t.plan(6)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -116,7 +116,7 @@ test('client.add: parsed torrent, from `parse-torrent`', function (t) {
 test('client.add: parsed torrent, with string type announce property', function (t) {
   t.plan(7)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -147,7 +147,7 @@ test('client.add: parsed torrent, with string type announce property', function 
 test('client.add: parsed torrent, with array type announce property', function (t) {
   t.plan(7)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -178,7 +178,7 @@ test('client.add: parsed torrent, with array type announce property', function (
 test('client.add: invalid torrent id: empty string', function (t) {
   t.plan(3)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) {
     t.ok(err instanceof Error)
@@ -194,7 +194,7 @@ test('client.add: invalid torrent id: empty string', function (t) {
 test('client.add: invalid torrent id: short buffer', function (t) {
   t.plan(3)
 
-  var client = new WebTorrent({ dht: false, tracker: false })
+  var client = new Hodlong({ dht: false, tracker: false })
 
   client.on('error', function (err) {
     t.ok(err instanceof Error)

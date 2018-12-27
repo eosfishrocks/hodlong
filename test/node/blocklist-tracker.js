@@ -2,7 +2,7 @@ var fixtures = require('webtorrent-fixtures')
 var series = require('run-series')
 var test = require('tape')
 var TrackerServer = require('bittorrent-tracker/server')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('blocklist blocks peers discovered via tracker', function (t) {
   t.plan(9)
@@ -34,7 +34,7 @@ test('blocklist blocks peers discovered via tracker', function (t) {
     },
 
     function (cb) {
-      client1 = new WebTorrent({ dht: false })
+      client1 = new Hodlong({ dht: false })
       client1.on('error', function (err) { t.fail(err) })
       client1.on('warning', function (err) { t.fail(err) })
 
@@ -51,7 +51,7 @@ test('blocklist blocks peers discovered via tracker', function (t) {
     },
 
     function (cb) {
-      client2 = new WebTorrent({
+      client2 = new Hodlong({
         dht: false,
         blocklist: [ '127.0.0.1' ]
       })

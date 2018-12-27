@@ -5,7 +5,7 @@ var MemoryChunkStore = require('memory-chunk-store')
 var networkAddress = require('network-address')
 var series = require('run-series')
 var test = require('tape')
-var WebTorrent = require('../../')
+var Hodlong = require('../../')
 
 test('Download using DHT (via magnet uri)', function (t) {
   t.plan(12)
@@ -23,7 +23,7 @@ test('Download using DHT (via magnet uri)', function (t) {
     },
 
     function (cb) {
-      client1 = new WebTorrent({
+      client1 = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port, host: networkAddress.ipv4() }
       })
@@ -65,7 +65,7 @@ test('Download using DHT (via magnet uri)', function (t) {
     },
 
     function (cb) {
-      client2 = new WebTorrent({
+      client2 = new Hodlong({
         tracker: false,
         dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port, host: networkAddress.ipv4() }
       })
