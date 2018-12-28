@@ -4,8 +4,8 @@ var fs = require('fs')
 var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
-var {Hodlong, HAPIz }= require('../../')
-
+var  Hodlong= require('../../')
+var HAPI = require('ut_hodlong/hodlong-api')
 
 test('Seed and download a file at the same time from an account that gets paid', function (t) {
   t.plan(14)

@@ -13,7 +13,7 @@ const path = require('path')
 const Peer = require('simple-peer')
 const randombytes = require('randombytes')
 const speedometer = require('speedometer')
-const HAPI = require('./hodlong-api')
+const HAPI = require('ut_hodlong/hodlong-api')
 
 const TCPPool = require('./lib/tcp-pool') // browser exclude
 const Torrent = require('./lib/torrent')
@@ -436,5 +436,3 @@ function isFileList (obj) {
 }
 
 module.exports = Hodlong;
-module.exports.Hodlong = Hodlong;
-module.exports.HAPI = HAPI;

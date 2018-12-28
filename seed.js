@@ -1,5 +1,5 @@
 let cryptotic = require('cryptico')
-var Hodlong = require('./index')
+var { Hodlong } =require('./index')
 var HAPI = require('./../hodlong-test/hodlong-api')
 
 let eosEndpoint = 'http://127.0.0.1:8888'
