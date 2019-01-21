@@ -12,7 +12,7 @@ HODLONG is a distributed file store that seeks to connect all computing devices 
 
 ## What is HODLONG
 
-HODLONG is a web torrent protocol:
+HODLONG is a webtorrent protocol extension:
 - defines a content-addressed file store
 - coordinates content delivery
 - coordinates statistics verification across nodes.
@@ -160,17 +160,17 @@ they can connect to both normal *and* web peers. We hope other clients will foll
 
 ### Install
 
-To install WebTorrent for use in node or the browser with `require('webtorrent')`, run:
+To install Hodlong for use in node or the browser with `require('webtorrent')`, run:
 
 ```bash
-npm install webtorrent
+npm install hodlong
 ```
 
 To install a `webtorrent`
 [command line program](https://github.com/webtorrent/webtorrent-cli), run:
 
 ```bash
-npm install webtorrent-cli -g
+npm install hodlong-cli -g
 ```
 
 To install a WebTorrent desktop application for Mac, Windows, or Linux, see

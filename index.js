@@ -14,6 +14,7 @@ const Peer = require('simple-peer')
 const randombytes = require('randombytes')
 const speedometer = require('speedometer')
 const HAPI = require('ut_hodlong/hodlong-api')
+const cryptico = require('cryptico')
 
 const TCPPool = require('./lib/tcp-pool') // browser exclude
 const Torrent = require('./lib/torrent')
@@ -138,6 +139,13 @@ class Hodlong extends EventEmitter {
             this.emit('ready')
         }
 
+        // EOS Hapi creation
+        this.hapi = new HAPI({endpoint: opts.endpoint,
+            signatureProvider: opts.signatureProvider,
+            rsaPrivateKey: opts.rsaPrivateKey,
+            rsaPubKey: cryptico.publicKeyString(opts.rsaPrivateKey),
+            contractInfo: opts.contractInfo});
+
         if (typeof loadIPSet === 'function' && opts.blocklist != null) {
             loadIPSet(opts.blocklist, {
                 headers: {
@@ -209,7 +217,7 @@ class Hodlong extends EventEmitter {
     add (torrentId, opts = {}, ontorrent) {
         if (this.destroyed) throw new Error('client is destroyed')
         if (typeof opts === 'function') [opts, ontorrent] = [{}, opts]
-
+        opts.hapi = this.hapi
         const onInfoHash = () => {
             if (this.destroyed) return
             for (const t of this.torrents) {

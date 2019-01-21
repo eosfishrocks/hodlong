@@ -6,6 +6,7 @@ var series = require('run-series')
 var test = require('tape')
 var  Hodlong= require('../../')
 var HAPI = require('ut_hodlong/hodlong-api')
+var cryptico = require('cryptico')
 
 test('Seed and download a file at the same time from an account that gets paid', function (t) {
   t.plan(14)
@@ -15,7 +16,7 @@ test('Seed and download a file at the same time from an account that gets paid',
   dhtServer.on('error', function (err) { t.fail(err) })
   dhtServer.on('warning', function (err) { t.fail(err) })
 
-  var client1, client2, client1hapi, client2hapi
+  var client1, client2
 
   series([
     function (cb) {
@@ -23,12 +24,18 @@ test('Seed and download a file at the same time from an account that gets paid',
     },
 
     function (cb) {
-      client1hapi = HAPI({endpoint: '127.0.0.1', eosPrivateKey: 'usera', rsaPubKey: '', rsaPrivKey: '',
-          contractInfo: {'hodlong': 'hodlong', 'trackers': 'trackers'}});
+
+      let privatePassphrase = 'This is a test phrase';
+      let RSABits = 1024;
+      let rsaPrivateKey= cryptico.generateRSAKey(privatePassphrase, RSABits);
+
       client1 = new Hodlong({
         tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port,
-        hapi: client1hapi}
+        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port},
+        endpoint: '127.0.0.1',
+        signatureProvider: '',
+        rsaPrivateKey: rsaPrivateKey,
+          contractInfo: {'hodlong': 'hodlong', 'trackers': 'trackers'}
       })
 
       client1.on('error', function (err) { t.fail(err) })
