@@ -4,7 +4,7 @@ var fs = require('fs')
 var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
-var  Hodlong= require('../../')
+var Hodlong = require('../../')
 var HAPI = require('ut_hodlong/hodlong-api')
 var cryptico = require('cryptico')
 
@@ -24,18 +24,17 @@ test('Seed and download a file at the same time from an account that gets paid',
     },
 
     function (cb) {
-
-      let privatePassphrase = 'This is a test phrase';
-      let RSABits = 1024;
-      let rsaPrivateKey= cryptico.generateRSAKey(privatePassphrase, RSABits);
+      let privatePassphrase = 'This is a test phrase'
+      let RSABits = 1024
+      let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
 
       client1 = new Hodlong({
         tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port},
+        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port },
         endpoint: '127.0.0.1',
         signatureProvider: '',
         rsaPrivateKey: rsaPrivateKey,
-          contractInfo: {'hodlong': 'hodlong', 'trackers': 'trackers'}
+        contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
       })
 
       client1.on('error', function (err) { t.fail(err) })

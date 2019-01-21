@@ -1,6 +1,6 @@
 var Buffer = require('safe-buffer').Buffer
 var test = require('tape')
-var { Hodlong } =require('../../')
+var { Hodlong } = require('../../')
 
 var img = Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64')
 img.name = 'img.png'
