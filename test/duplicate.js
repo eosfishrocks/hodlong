@@ -1,11 +1,25 @@
 var fixtures = require('webtorrent-fixtures')
 var test = require('tape')
 var Hodlong = require('../')
+var cryptico = require('cryptico')
 
 test('client.seed followed by duplicate client.add (sync)', function (t) {
   t.plan(6)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
+
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 
@@ -36,7 +50,19 @@ test('client.seed followed by duplicate client.add (sync)', function (t) {
 test('client.seed followed by duplicate client.add (async)', function (t) {
   t.plan(6)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 
@@ -67,7 +93,19 @@ test('client.seed followed by duplicate client.add (async)', function (t) {
 test('client.seed followed by two duplicate client.add calls (sync)', function (t) {
   t.plan(9)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 
@@ -110,7 +148,19 @@ test('client.seed followed by two duplicate client.add calls (sync)', function (
 test('client.seed followed by two duplicate client.add calls (async)', function (t) {
   t.plan(9)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 
@@ -153,7 +203,19 @@ test('client.seed followed by two duplicate client.add calls (async)', function 
 test('successive sync client.add, client.remove, client.add, client.remove (sync)', function (t) {
   t.plan(3)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 

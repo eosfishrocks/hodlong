@@ -5,7 +5,6 @@ var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
 var Hodlong = require('../../')
-var HAPI = require('ut_hodlong/hodlong-api')
 var cryptico = require('cryptico')
 
 test('Seed and download a file at the same time from an account that gets paid', function (t) {

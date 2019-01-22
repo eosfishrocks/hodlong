@@ -1,11 +1,23 @@
 var fixtures = require('webtorrent-fixtures')
 var test = require('tape')
 var Hodlong = require('../')
+var cryptico = require('cryptico')
 
 test('client.add: duplicate trackers', function (t) {
   t.plan(3)
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -29,7 +41,19 @@ test('client.add: duplicate trackers, with multiple torrents', function (t) {
     announce: [ 'wss://example.com', 'wss://example.com', 'wss://example.com' ]
   }
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -66,8 +90,19 @@ test('client.add: duplicate trackers (including in .torrent file), multiple torr
   var parsedTorrentAlice = Object.assign({}, fixtures.alice.parsedTorrent)
   parsedTorrentAlice.announce = [ 'wss://example.com', 'wss://example.com', 'wss://example.com' ]
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
 
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 

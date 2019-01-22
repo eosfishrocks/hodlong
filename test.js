@@ -5,7 +5,6 @@ var HAPI = require('./../hodlong-test/hodlong-api')
 let eosEndpoint = 'http://127.0.0.1:8888'
 let privatePassphrase = 'This is a test phrase'
 let userA = 'usera'
-let trackerUserA = 'trackerusera'
 let eosPrivateKeyUserA = '5Kc4Vt2i4v8XqFK8PbfFn15umSQ9Eeh5fjCbJjc9VqQPMgLnyJH'
 let RSABits = 1024
 let privateKey = cryptotic.generateRSAKey(privatePassphrase, RSABits)

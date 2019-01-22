@@ -1,12 +1,24 @@
 var fixtures = require('webtorrent-fixtures')
 var test = require('tape')
 var Hodlong = require('../')
+var cryptico = require('cryptico')
 
 test('client.remove: remove by Torrent object', function (t) {
   t.plan(5)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
 
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 
