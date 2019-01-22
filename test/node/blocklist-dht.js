@@ -3,6 +3,7 @@ var fixtures = require('webtorrent-fixtures')
 var series = require('run-series')
 var test = require('tape')
 var Hodlong = require('../../')
+var cryptico = require('cryptico')
 
 test('blocklist blocks peers discovered via DHT', function (t) {
   t.plan(8)
@@ -18,10 +19,20 @@ test('blocklist blocks peers discovered via DHT', function (t) {
     },
 
     function (cb) {
-      client1 = new Hodlong({
+      let privatePassphrase = 'This is a test phrase'
+      let RSABits = 1024
+      let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+      // var client = new Hodlong({ dht: false, tracker: false })
+      var client1 = new Hodlong({
         tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
+        dht: true,
+        endpoint: '127.0.0.1',
+        signatureProvider: '',
+        rsaPrivateKey: rsaPrivateKey,
+        contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
       })
+
       client1.on('error', function (err) { t.fail(err) })
       client1.on('warning', function (err) { t.fail(err) })
 
@@ -55,11 +66,19 @@ test('blocklist blocks peers discovered via DHT', function (t) {
     },
 
     function (cb) {
-      client2 = new Hodlong({
+      let privatePassphrase = 'This is a test phrase'
+      let RSABits = 1024
+      let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+      var client2 = new Hodlong({
         tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port },
-        blocklist: [ '127.0.0.1' ]
+        dht: true,
+        endpoint: '127.0.0.1',
+        signatureProvider: '',
+        rsaPrivateKey: rsaPrivateKey,
+        contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
       })
+
       client2.on('error', function (err) { t.fail(err) })
       client2.on('warning', function (err) { t.fail(err) })
 

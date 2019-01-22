@@ -2,12 +2,24 @@ var fixtures = require('webtorrent-fixtures')
 var http = require('http')
 var test = require('tape')
 var Hodlong = require('../../')
+var cryptico = require('cryptico')
 
 test('Hodlong.WEBRTC_SUPPORT', function (t) {
   t.plan(2)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
 
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
 
@@ -22,14 +34,26 @@ test('client.add: http url to a torrent file, string', function (t) {
   t.plan(8)
 
   var server = http.createServer(function (req, res) {
-    t.ok(req.headers['user-agent'].indexOf('Hodlong') !== -1)
+    t.ok(req.headers['user-agent'].indexOf('webtorrent') !== -1)
     res.end(fixtures.leaves.torrent)
   })
 
   server.listen(0, function () {
     var port = server.address().port
     var url = 'http://127.0.0.1:' + port
-    var client = new Hodlong({ dht: false, tracker: false })
+    let privatePassphrase = 'This is a test phrase'
+    let RSABits = 1024
+    let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+    // var client = new Hodlong({ dht: false, tracker: false })
+    var client = new Hodlong({
+      tracker: false,
+      dht: false,
+      endpoint: '127.0.0.1',
+      signatureProvider: '',
+      rsaPrivateKey: rsaPrivateKey,
+      contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+    })
 
     client.on('error', function (err) { t.fail(err) })
     client.on('warning', function (err) { t.fail(err) })
@@ -51,7 +75,19 @@ test('client.add: http url to a torrent file, string', function (t) {
 test('client.add: filesystem path to a torrent file, string', function (t) {
   t.plan(6)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -71,7 +107,19 @@ test('client.add: filesystem path to a torrent file, string', function (t) {
 test('client.seed: filesystem path to file, string', function (t) {
   t.plan(6)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -94,7 +142,19 @@ test('client.seed: filesystem path to file, string', function (t) {
 test('client.seed: filesystem path to folder with one file, string', function (t) {
   t.plan(6)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -114,7 +174,19 @@ test('client.seed: filesystem path to folder with one file, string', function (t
 test('client.seed: filesystem path to folder with multiple files, string', function (t) {
   t.plan(7)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
 
   client.on('error', function (err) { t.fail(err) })
   client.on('warning', function (err) { t.fail(err) })
@@ -145,7 +217,19 @@ test('client.seed: filesystem path to folder with multiple files, string', funct
 test('client.add: invalid torrent id: invalid filesystem path', function (t) {
   t.plan(3)
 
-  var client = new Hodlong({ dht: false, tracker: false })
+  let privatePassphrase = 'This is a test phrase'
+  let RSABits = 1024
+  let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+  // var client = new Hodlong({ dht: false, tracker: false })
+  var client = new Hodlong({
+    tracker: false,
+    dht: false,
+    endpoint: '127.0.0.1',
+    signatureProvider: '',
+    rsaPrivateKey: rsaPrivateKey,
+    contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+  })
 
   client.on('error', function (err) {
     t.ok(err instanceof Error)
