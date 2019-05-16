@@ -1,150 +1,138 @@
-var DHT = require('bittorrent-dht/server')
 var fixtures = require('webtorrent-fixtures')
 var fs = require('fs')
 var MemoryChunkStore = require('memory-chunk-store')
 var series = require('run-series')
 var test = require('tape')
+var TrackerServer = require('bittorrent-tracker/server')
 var Hodlong = require('../../')
 var cryptico = require('cryptico')
+var JsSignatureProvider  = require('eosjs/dist/eosjs-jssig')
 
-test('Seed and download a file at the same time from an account that gets paid', function (t) {
-  t.plan(14)
+test('Download using UDP tracker (via magnet uri)', function (t) {
+  magnetDownloadTest(t, 'udp')
+})
 
-  var dhtServer = new DHT({ bootstrap: false })
+test('Download using HTTP tracker (via magnet uri)', function (t) {
+  magnetDownloadTest(t, 'http')
+})
+function magnetDownloadTest (t, serverType) {
+  t.plan(10)
 
-  dhtServer.on('error', function (err) { t.fail(err) })
-  dhtServer.on('warning', function (err) { t.fail(err) })
+  var tracker = new TrackerServer(
+      serverType === 'udp' ? { http: false, ws: false } : { udp: false, ws: false }
+  )
 
-  var client1, client2
+  tracker.on('error', function (err) { t.fail(err) })
+  tracker.on('warning', function (err) { t.fail(err) })
+
+  var trackerStartCount = 0
+  tracker.on('start', function () {
+    trackerStartCount += 1
+  })
+
+  var parsedTorrent = Object.assign({}, fixtures.leaves.parsedTorrent)
+  var magnetURI, client1, client2
 
   series([
     function (cb) {
-      dhtServer.listen(cb)
+      tracker.listen(cb)
     },
 
     function (cb) {
-      let privatePassphrase = 'This is a test phrase'
-      let RSABits = 1024
-      let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+      var port = tracker[serverType].address().port
+      var announceUrl = serverType === 'http'
+          ? 'http://127.0.0.1:' + port + '/announce'
+          : 'udp://127.0.0.1:' + port
+
+      parsedTorrent.announce = [ announceUrl ]
+      magnetURI = 'magnet:?xt=urn:btih:' + parsedTorrent.infoHash + '&tr=' + encodeURIComponent(announceUrl)
 
       client1 = new Hodlong({
-        tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port },
-        endpoint: '127.0.0.1',
-        signatureProvider: '',
-        rsaPrivateKey: rsaPrivateKey,
+        dht: false,
+        endpoint: 'http://127.0.0.1:8888',
+        accountName: 'usera',
+        privatePassphrase: 'usera',
+        signatureProvider: new JsSignatureProvider.default(['5Kc4Vt2i4v8XqFK8PbfFn15umSQ9Eeh5fjCbJjc9VqQPMgLnyJH']),
         contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
       })
 
       client1.on('error', function (err) { t.fail(err) })
       client1.on('warning', function (err) { t.fail(err) })
 
-      var torrent = client1.add(fixtures.leaves.torrent, { store: MemoryChunkStore })
+      client1.on('torrent', function (torrent) {
+        // torrent metadata has been fetched -- sanity check it
+        t.equal(torrent.name, 'Leaves of Grass by Walt Whitman.epub')
 
-      torrent.on('dhtAnnounce', function () {
-        t.pass('client1 finished dht announce')
-        announced = true
-        maybeDone()
+        var names = [
+          'Leaves of Grass by Walt Whitman.epub'
+        ]
+
+        torrent.once('noPeers', function (announceType) {
+          t.equal(announceType, 'tracker', 'noPeers event seen with correct announceType')
+        })
+
+        t.deepEqual(torrent.files.map(function (file) { return file.name }), names)
+
+        torrent.load(fs.createReadStream(fixtures.leaves.contentPath), function (err) {
+          cb(err)
+        })
       })
 
-      torrent.load(fs.createReadStream(fixtures.leaves.contentPath), function (err) {
-        t.error(err, 'client1 started seeding')
-        loaded = true
-        maybeDone()
-      })
-
-      var announced = false
-      var loaded = false
-      function maybeDone () {
-        if (announced && loaded) cb(null)
-      }
+      client1.add(parsedTorrent, { store: MemoryChunkStore })
     },
 
     function (cb) {
       client2 = new Hodlong({
-        tracker: false,
-        dht: { bootstrap: '127.0.0.1:' + dhtServer.address().port }
+        dht: false,
+        endpoint: 'http://127.0.0.1:8888',
+        accountName: 'providera',
+        privatePassphrase: 'providera',
+        signatureProvider: new JsSignatureProvider.default(['5KYJxK1RsnUn9xkPaJ48EhqYspxoiQbiw5oigwSqsNK66PQhrgs']),
+        contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
       })
 
       client2.on('error', function (err) { t.fail(err) })
       client2.on('warning', function (err) { t.fail(err) })
 
-      var torrent = client2.add(fixtures.alice.torrent, { store: MemoryChunkStore })
-
-      torrent.on('dhtAnnounce', function () {
-        t.pass('client2 finished dht announce')
-        announced = true
-        maybeDone()
-      })
-
-      torrent.load(fs.createReadStream(fixtures.alice.contentPath), function (err) {
-        t.error(err, 'client2 started seeding')
-        loaded = true
-        maybeDone()
-      })
-
-      var announced = false
-      var loaded = false
-      function maybeDone () {
-        if (announced && loaded) cb(null)
-      }
-    },
-
-    function (cb) {
-      client1.add(fixtures.alice.magnetURI, { store: MemoryChunkStore })
-
-      client1.on('torrent', function (torrent) {
-        torrent.files[0].getBuffer(function (err, buf) {
-          t.error(err)
-          t.deepEqual(buf, fixtures.alice.content, 'client1 downloaded correct content')
-          gotBuffer1 = true
-          maybeDone()
-        })
-
-        torrent.once('done', function () {
-          t.pass('client1 downloaded torrent from client2')
-          gotDone1 = true
-          maybeDone()
-        })
-      })
-
-      client2.add(fixtures.leaves.magnetURI, { store: MemoryChunkStore })
-
       client2.on('torrent', function (torrent) {
-        torrent.files[0].getBuffer(function (err, buf) {
-          t.error(err)
-          t.deepEqual(buf, fixtures.leaves.content, 'client2 downloaded correct content')
-          gotBuffer2 = true
-          maybeDone()
+        torrent.files.forEach(function (file) {
+          file.getBuffer(function (err, buf) {
+            if (err) throw err
+            t.deepEqual(buf, fixtures.leaves.content, 'downloaded correct content')
+            gotBuffer = true
+            maybeDone()
+          })
         })
 
         torrent.once('done', function () {
           t.pass('client2 downloaded torrent from client1')
-          gotDone2 = true
+          torrentDone = true
           maybeDone()
         })
+
+        var gotBuffer = false
+        var torrentDone = false
+        function maybeDone () {
+          if (gotBuffer && torrentDone) cb(null)
+        }
       })
 
-      var gotBuffer1 = false
-      var gotBuffer2 = false
-      var gotDone1 = false
-      var gotDone2 = false
-      function maybeDone () {
-        if (gotBuffer1 && gotBuffer2 && gotDone1 && gotDone2) cb(null)
-      }
+      client2.add(magnetURI, { store: MemoryChunkStore })
     }
 
   ], function (err) {
     t.error(err)
 
+    t.equal(trackerStartCount, 2)
+
+    tracker.close(function () {
+      t.pass('tracker closed')
+    })
     client1.destroy(function (err) {
       t.error(err, 'client1 destroyed')
     })
     client2.destroy(function (err) {
       t.error(err, 'client2 destroyed')
     })
-    dhtServer.destroy(function (err) {
-      t.error(err, 'dht server destroyed')
-    })
   })
-})
+}

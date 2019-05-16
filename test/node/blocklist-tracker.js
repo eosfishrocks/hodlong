@@ -3,6 +3,7 @@ var series = require('run-series')
 var test = require('tape')
 var TrackerServer = require('bittorrent-tracker/server')
 var Hodlong = require('../../')
+var cryptico = require('cryptico')
 
 test('blocklist blocks peers discovered via tracker', function (t) {
   t.plan(9)
@@ -34,7 +35,19 @@ test('blocklist blocks peers discovered via tracker', function (t) {
     },
 
     function (cb) {
-      client1 = new Hodlong({ dht: false })
+      // var client1 = new Hodlong({ dht: false })
+      let privatePassphrase = 'This is a test phrase'
+      let RSABits = 1024
+      let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+
+      var client1 = new Hodlong({
+        tracker: true,
+        dht: false,
+        endpoint: '127.0.0.1',
+        signatureProvider: '',
+        rsaPrivateKey: rsaPrivateKey,
+        contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+      })
       client1.on('error', function (err) { t.fail(err) })
       client1.on('warning', function (err) { t.fail(err) })
 
@@ -51,9 +64,21 @@ test('blocklist blocks peers discovered via tracker', function (t) {
     },
 
     function (cb) {
-      client2 = new Hodlong({
+      // client2 = new Hodlong({
+      //  dht: false,
+      // blocklist: [ '127.0.0.1' ]
+      // })
+      let privatePassphrase = 'This is a test phrase'
+      let RSABits = 1024
+      let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)
+      var client2 = new Hodlong({
+        tracker: true,
+        blocklist: ['127.0.0.1'],
         dht: false,
-        blocklist: [ '127.0.0.1' ]
+        endpoint: '127.0.0.1',
+        signatureProvider: '',
+        rsaPrivateKey: rsaPrivateKey,
+        contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
       })
       client2.on('error', function (err) { t.fail(err) })
       client2.on('warning', function (err) { t.fail(err) })

@@ -4,7 +4,7 @@ const { Buffer } = require('safe-buffer')
 const { EventEmitter } = require('events')
 const concat = require('simple-concat')
 const createTorrent = require('create-torrent')
-const debug = require('debug')('webtorrent')
+const debug = require('debug')('hodlong')
 const DHT = require('bittorrent-dht/client') // browser exclude
 const loadIPSet = require('load-ip-set') // browser exclude
 const parallel = require('run-parallel')
@@ -47,6 +47,7 @@ class Hodlong extends EventEmitter {
   constructor (opts = {}) {
     super()
 
+    const createTorrent = require('create-torrent')
     if (typeof opts.peerId === 'string') {
       this.peerId = opts.peerId
     } else if (Buffer.isBuffer(opts.peerId)) {
@@ -66,7 +67,9 @@ class Hodlong extends EventEmitter {
     this.nodeIdBuffer = Buffer.from(this.nodeId, 'hex')
 
     this._debugId = this.peerId.toString('hex').substring(0, 7)
-
+    if (opts.webrtc){
+      global.WRTC = opts.webrtc
+    }
     this.destroyed = false
     this.listening = false
     this.torrentPort = opts.torrentPort || 0
@@ -76,7 +79,7 @@ class Hodlong extends EventEmitter {
     this.maxConns = Number(opts.maxConns) || 55
 
     this._debug(
-      'new webtorrent (peerId %s, nodeId %s, port %s)',
+      'new hodlong (peerId %s, nodeId %s, port %s)',
       this.peerId, this.nodeId, this.torrentPort
     )
 
@@ -139,17 +142,26 @@ class Hodlong extends EventEmitter {
       this.emit('ready')
     }
 
+    let RSABits = 1024
+    let rsaPrivateKey = cryptico.generateRSAKey(opts.privatePassphrase, RSABits)
+
     // EOS Hapi creation
-    this.hapi = new HAPI({ endpoint: opts.endpoint,
+    this.hapi = new HAPI({
+      endpoint: opts.endpoint,
+      accountName: opts.accountName,
       signatureProvider: opts.signatureProvider,
-      rsaPrivateKey: opts.rsaPrivateKey,
-      rsaPubKey: cryptico.publicKeyString(opts.rsaPrivateKey),
-      contractInfo: opts.contractInfo })
+      rsaPrivateKey: rsaPrivateKey,
+      rsaPubKey: cryptico.publicKeyString(rsaPrivateKey),
+      contractInfo: opts.contractInfo,
+      textEncoder: opts.textEncoder,
+      textDecoder: opts.textDecoder,
+      externalFetch: opts.externalFetch
+    })
 
     if (typeof loadIPSet === 'function' && opts.blocklist != null) {
       loadIPSet(opts.blocklist, {
         headers: {
-          'user-agent': `Hodlong/${VERSION} (https://webtorrent.io)`
+          'user-agent': `Hodlong/${VERSION} (https://hodlong.com)`
         }
       }, (err, ipSet) => {
         if (err) return this.error(`Failed to load blocklist: ${err.message}`)
@@ -159,6 +171,7 @@ class Hodlong extends EventEmitter {
     } else {
       process.nextTick(ready)
     }
+
   }
 
   get downloadSpeed () { return this._downloadSpeed() }
@@ -243,6 +256,7 @@ class Hodlong extends EventEmitter {
     this._debug('add')
     opts = opts ? Object.assign({}, opts) : {}
 
+    opts.hapi = this.hapi
     const torrent = new Torrent(torrentId, this, opts)
     this.torrents.push(torrent)
 
@@ -265,10 +279,9 @@ class Hodlong extends EventEmitter {
 
     this._debug('seed')
     opts = opts ? Object.assign({}, opts) : {}
-
+    opts.hapi = this.hapi
     // no need to verify the hashes we create
     opts.skipVerify = true
-
     const isFilePath = typeof input === 'string'
 
     // When seeding from fs path, initialize store from that path to avoid a copy

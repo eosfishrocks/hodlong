@@ -4,6 +4,8 @@ var series = require('run-series')
 var test = require('tape')
 var Hodlong = require('../../')
 var cryptico = require('cryptico')
+//
+// var debug = require('bitorrent-dht')('debug')
 
 test('blocklist blocks peers discovered via DHT', function (t) {
   t.plan(8)
@@ -12,7 +14,7 @@ test('blocklist blocks peers discovered via DHT', function (t) {
 
   series([
     function (cb) {
-      dhtServer = new DHT({ bootstrap: false })
+      dhtServer = new DHT({ bootstrap: false, debug: true })
       dhtServer.on('error', function (err) { t.fail(err) })
       dhtServer.on('warning', function (err) { t.fail(err) })
       dhtServer.listen(cb)
@@ -60,12 +62,16 @@ test('blocklist blocks peers discovered via DHT', function (t) {
 
       var torrentReady = false
       var announced = false
+      t.pass('debug 1')
       function maybeDone () {
+        t.pass('debug 2')
         if (torrentReady && announced) cb(null)
       }
+      t.pass('debug 3')
     },
 
     function (cb) {
+      t.pass('debug 4')
       let privatePassphrase = 'This is a test phrase'
       let RSABits = 1024
       let rsaPrivateKey = cryptico.generateRSAKey(privatePassphrase, RSABits)

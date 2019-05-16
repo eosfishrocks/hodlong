@@ -1,19 +1,19 @@
-# Get Started with WebTorrent
+# Get Started with Hodlong
 
-**WebTorrent** is the first torrent client that works in the **browser**. It's easy
+**Hodlong** is the first browser based torrent client that can pay for files via EOSIO technologies. It's easy
 to get started!
 
 ## Install
 
-To start using WebTorrent, simply include the
-[`webtorrent.min.js`](https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js)
+To start using Hodlong, simply include the
+[`hodlong.min.js`](https://github.com/eosfishrocks/hodlong)
 script on your page.
 
 ```html
-<script src="webtorrent.min.js"></script>
+<script src="hodlong.min.js"></script>
 ```
 
-This provides a `WebTorrent` function on the `window` object.
+This provides a `Hodlong` function on the `window` object.
 
 ### Browserify
 
@@ -22,13 +22,13 @@ you use [node.js](http://nodejs.org/) style `require()` to organize your browser
 code, and load packages installed by [npm](https://npmjs.org/).
 
 ```
-npm install webtorrent
+npm install hodlong
 ```
 
 Then use `WebTorrent` like this:
 
 ```js
-var WebTorrent = require('webtorrent')
+var Hodlong = require('hodlong')
 ```
 
 ## Quick Examples
@@ -36,9 +36,9 @@ var WebTorrent = require('webtorrent')
 ### Downloading a torrent (in the browser)
 
 ```js
-var WebTorrent = require('webtorrent')
+var Hodlong = require('webtorrent')
 
-var client = new WebTorrent()
+var client = new Hodlong()
 
 // Sintel, a free, Creative Commons movie
 var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
@@ -60,16 +60,16 @@ out of the box. There are additional ways to access file content directly, inclu
 as a node-style stream, Buffer, or Blob URL.
 
 Video and audio content can be streamed, i.e. playback will start before the full
-file is downloaded. Seeking works too – WebTorrent dynamically fetches
+file is downloaded. Seeking works too – Hodlong dynamically fetches
 the needed torrent pieces from the network on-demand.
 
 ### Creating a new torrent and seed it (in the browser)
 
 ```js
 var dragDrop = require('drag-drop')
-var WebTorrent = require('webtorrent')
+var Hodlong = require('webtorrent')
 
-var client = new WebTorrent()
+var client = new Hodlong()
 
 // When user drops files on the browser, create a new torrent and start seeding it!
 dragDrop('body', function (files) {
@@ -89,9 +89,9 @@ This exports a `DragDrop` function on `window`.
 ### Download and save a torrent (in Node.js)
 
 ```js
-var WebTorrent = require('webtorrent')
+var Hodlong = require('webtorrent')
 
-var client = new WebTorrent()
+var client = new Hodlong()
 
 var magnetURI = 'magnet: ...'
 
@@ -105,7 +105,7 @@ client.add(magnetURI, { path: '/path/to/folder' }, function (torrent) {
 ### Complete HTML page example
 
 Looking for a more complete example? Look no further! This HTML example has a form input
-where the user can paste a magnet link and start a download over WebTorrent.
+where the user can paste a magnet link and start a download over Hodlong.
 
 Best of all, it's a single HTML page, under 70 lines!
 
@@ -117,7 +117,7 @@ downloaded.
 <!doctype html>
 <html>
   <body>
-    <h1>Download files using the WebTorrent protocol (BitTorrent over WebRTC).</h1>
+    <h1>Download files using the Hodlong protocol (BitTorrent over WebRTC).</h1>
 
     <form>
       <label for="torrentId">Download from a magnet link: </label>
@@ -128,11 +128,11 @@ downloaded.
     <h2>Log</h2>
     <div class="log"></div>
 
-    <!-- Include the latest version of WebTorrent -->
+    <!-- Include the latest version of Hodlong -->
     <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
 
     <script>
-      var client = new WebTorrent()
+      var client = new Hodlong()
 
       client.on('error', function (err) {
         console.error('ERROR: ' + err.message)
@@ -199,15 +199,15 @@ see what it looks like and play around with it!
 
 Feel free to replace `torrentId` with other torrent files, or magnet links, but
 keep in mind that the browser can only download torrents that are seeded by
-WebRTC peers (web peers). Use [WebTorrent Desktop](https://webtorrent.io/desktop)
-or [Instant.io](https://instant.io) to seed torrents to the WebTorrent network.
+WebRTC peers (web peers). Use [Hodlong Desktop](https://webtorrent.io/desktop)
+or [Instant.io](https://instant.io) to seed torrents to the Hodlong network.
 
 ```html
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>WebTorrent video player</title>
+    <title>Hodlong video player</title>
     <style>
       #output video {
         width: 100%;
@@ -281,7 +281,7 @@ or [Instant.io](https://instant.io) to seed torrents to the WebTorrent network.
         </div>
       </div>
     </div>
-    <!-- Include the latest version of WebTorrent -->
+    <!-- Include the latest version of Hodlong -->
     <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
 
     <!-- Moment is used to show a human-readable remaining time -->
@@ -290,7 +290,7 @@ or [Instant.io](https://instant.io) to seed torrents to the WebTorrent network.
     <script>
       var torrentId = 'https://webtorrent.io/torrents/sintel.torrent'
 
-      var client = new WebTorrent()
+      var client = new Hodlong()
 
       // HTML elements
       var $body = document.body
@@ -366,7 +366,7 @@ or [Instant.io](https://instant.io) to seed torrents to the WebTorrent network.
 
 ## More Documentation
 
-Check out the [API Documentation](//webtorrent.io/docs) and [FAQ](//webtorrent.io/faq) for more details.
+Check out the [API Documentation](/docs) and [FAQ](/faq) for more details.
 
 [render-media]: https://github.com/feross/render-media/blob/master/index.js#L12-L20
 [drag-drop]: https://npmjs.com/package/drag-drop

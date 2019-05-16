@@ -61,9 +61,6 @@ MIT. This project and README are inspired by the IPFS project, but they do not s
 ## Contributers
 
 <<<<<<< HEAD
-HODLONG is a BPFish, EosHuobipool, Eosflytomars, and EosCannonch project.<h1 align="center">
-
-
 
 Webtorrent readme below to be updated to hodlong client.
 

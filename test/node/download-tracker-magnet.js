@@ -5,6 +5,8 @@ var series = require('run-series')
 var test = require('tape')
 var TrackerServer = require('bittorrent-tracker/server')
 var Hodlong = require('../../')
+var cryptico = require('cryptico')
+var  JsSignatureProvider  = require('eosjs/dist/eosjs-jssig')
 
 test('Download using UDP tracker (via magnet uri)', function (t) {
   magnetDownloadTest(t, 'udp')
@@ -13,7 +15,6 @@ test('Download using UDP tracker (via magnet uri)', function (t) {
 test('Download using HTTP tracker (via magnet uri)', function (t) {
   magnetDownloadTest(t, 'http')
 })
-
 function magnetDownloadTest (t, serverType) {
   t.plan(10)
 
@@ -46,7 +47,14 @@ function magnetDownloadTest (t, serverType) {
       parsedTorrent.announce = [ announceUrl ]
       magnetURI = 'magnet:?xt=urn:btih:' + parsedTorrent.infoHash + '&tr=' + encodeURIComponent(announceUrl)
 
-      client1 = new Hodlong({ dht: false })
+      client1 = new Hodlong({
+        dht: false,
+        endpoint: 'http://testnet.ngrok.io',
+        accountName: 'usera',
+        privatePassphrase: 'usera',
+        signatureProvider: new JsSignatureProvider.default(['5Kc4Vt2i4v8XqFK8PbfFn15umSQ9Eeh5fjCbJjc9VqQPMgLnyJH']),
+        contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+      })
 
       client1.on('error', function (err) { t.fail(err) })
       client1.on('warning', function (err) { t.fail(err) })
@@ -74,7 +82,14 @@ function magnetDownloadTest (t, serverType) {
     },
 
     function (cb) {
-      client2 = new Hodlong({ dht: false })
+      client2 = new Hodlong({
+        dht: false,
+        endpoint: 'http://testnet.ngrok.io',
+        accountName: 'providera',
+        privatePassphrase: 'providera',
+        signatureProvider: new JsSignatureProvider.default(['5KYJxK1RsnUn9xkPaJ48EhqYspxoiQbiw5oigwSqsNK66PQhrgs']),
+        contractInfo: { 'hodlong': 'hodlong', 'trackers': 'trackers' }
+      })
 
       client2.on('error', function (err) { t.fail(err) })
       client2.on('warning', function (err) { t.fail(err) })
